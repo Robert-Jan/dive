@@ -1,0 +1,9 @@
+﻿@model IEnumerable<Dive.Models.Board>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+Welcome<br/>
+@foreach (var item in Model) {
+    <span>@Html.DisplayFor(modelItem => item.Name)</span>
+}

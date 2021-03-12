@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "postcss tailwind.css -o style.css",
+    "production": "env NODE_ENV=production postcss tailwind.css -o style.css"
+  },
+  "dependencies": {
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.0.2"
+  }
+}
