@@ -1,5 +1,5 @@
-﻿using Dive.Data;
-using Dive.Models;
+﻿using Dive.App.Data;
+using Dive.App.Models;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Dive.Controllers
+namespace Dive.App.Controllers
 {
     public class HomeController : Controller
     {

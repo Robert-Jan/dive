@@ -23,4 +23,9 @@
     <ProjectReference Include="..\..\src\Dive.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <VSTestLogger>trx</VSTestLogger>
+    <VSTestResultsDirectory>$(SolutionDir)\tests\.logs</VSTestResultsDirectory>
+  </PropertyGroup>
+
 </Project>

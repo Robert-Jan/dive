@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Dive.Models
+namespace Dive.App.Models
 {
     public class Role : IdentityRole<int>
     {

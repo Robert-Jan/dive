@@ -9,10 +9,13 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS sdk
 WORKDIR /dive
 RUN mkdir storage
+COPY Directory.Build.props .
+COPY *.sln .
 COPY resources/wwwroot resources/wwwroot
-COPY src app
+COPY src src
+COPY tests tests
 RUN dotnet tool install --global dotnet-ef
-RUN dotnet restore "app/Dive.csproj"
+RUN dotnet restore
 ENV PATH="~/.dotnet/tools:${PATH}"
 
 FROM node:current-alpine as tailwind
@@ -35,7 +38,7 @@ RUN curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l /vsdbg
 ENV DOTNET_USE_POLLING_FILE_WATCHER 1
 WORKDIR /dive
 COPY --from=resources-development /resources/style.css resources/wwwroot
-ENTRYPOINT dotnet watch run --urls=http://+:5000/ --project app/Dive.csproj
+ENTRYPOINT dotnet watch run --urls=http://+:5000/ --project src/Dive.csproj
 
 ##
 ## Production
@@ -44,8 +47,8 @@ FROM tailwind as resources-production
 RUN npm run production
 
 FROM sdk AS publish
-RUN dotnet build "/dive/app/Dive.csproj" -c Release -o /dive/build
-RUN dotnet publish "/dive/app/Dive.csproj" -c Release -o /dive/publish
+RUN dotnet build "/dive/src/Dive.csproj" -c Release -o /dive/build
+RUN dotnet publish "/dive/src/Dive.csproj" -c Release -o /dive/publish
 
 FROM runtime AS final
 WORKDIR /dive

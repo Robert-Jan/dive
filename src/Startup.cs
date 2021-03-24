@@ -1,5 +1,5 @@
-using Dive.Data;
-using Dive.Models;
+using Dive.App.Data;
+using Dive.App.Models;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Http;
 
-namespace Dive
+namespace Dive.App
 {
     public class Startup
     {
@@ -29,9 +29,7 @@ namespace Dive
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(
-                Path.Combine(Directory.GetCurrentDirectory(), "..", "storage", "keys")
-            ));
+            services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/dive/storage/keys"));
 
             services.AddDbContext<DiveContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL")));
@@ -78,9 +76,7 @@ namespace Dive
 
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "..", "resources", "wwwroot")
-                ),
+                FileProvider = new PhysicalFileProvider("/dive/resources/wwwroot"),
                 RequestPath = new PathString("")
             });
 

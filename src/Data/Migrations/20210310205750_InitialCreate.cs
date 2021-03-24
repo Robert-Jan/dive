@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Dive.Data.Migrations
+namespace Dive.App.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {

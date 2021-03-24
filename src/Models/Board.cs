@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dive.Models
+namespace Dive.App.Models
 {
     public class Board
     {

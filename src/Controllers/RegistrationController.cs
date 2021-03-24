@@ -1,9 +1,9 @@
-using Dive.Models;
+using Dive.App.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 
-namespace Dive.Controllers
+namespace Dive.App.Controllers
 {
     public class RegistrationController : Controller
     {

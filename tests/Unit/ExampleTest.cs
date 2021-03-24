@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace Tests.Unit
+namespace Dive.Tests.Unit
 {
     public class ExampleTest
     {

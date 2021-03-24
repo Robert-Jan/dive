@@ -4,6 +4,7 @@ Dive is a web based application to make Kanban boards in your browser. The purpo
 - Docker
 - ASP.NET Core 5
 - Entity Framework Core 5 with PostgreSQL
+- xUnit for unit and integration tests
 - Tailwind CSS
 
 ## Production

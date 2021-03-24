@@ -1,10 +1,10 @@
 using System.ComponentModel;
-using Dive.Models;
+using Dive.App.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dive.Data
+namespace Dive.App.Data
 {
     public class DiveContext : IdentityDbContext<User, Role, int>
     {
