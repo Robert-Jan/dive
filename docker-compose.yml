@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
     app:
-        image: robert-jan/dive:latest
+        image: rjvdelst/dive:latest
         environment: 
             - "ConnectionStrings__PostgreSQL=Server=dive_db_1; Port=5432; Database=dive; Username=dive; Password=dive;"
         ports:

@@ -10,6 +10,9 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    env:
+      COMPOSE_INTERACTIVE_NO_CLI: 1
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -17,8 +20,11 @@ jobs:
       - name: Build develop image
         run: make dev-image
 
-      - name: Run test suite
-        run: make tests
+      - name: Run unit tests
+        run: make unit
+
+      - name: Run integration tests
+        run: make integration
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1

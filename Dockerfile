@@ -55,7 +55,7 @@ FROM runtime AS final
 WORKDIR /dive
 COPY --from=sdk /dive/resources/wwwroot resources/wwwroot
 COPY --from=publish /dive/publish app
-COPY --from=sdk /dive/app/Properties app/Properties
+COPY --from=sdk /dive/src/Properties app/Properties
 COPY --from=resources-production /resources/style.css resources/wwwroot
 WORKDIR /dive/app
 ENTRYPOINT ["dotnet", "Dive.dll"]

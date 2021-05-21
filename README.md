@@ -18,7 +18,7 @@ ConnectionStrings__PostgreSQL=Server=HOST; Port=PORT; Database=DATABASE; Usernam
 This project provides several Make command to build and run Docker commands. To run the application in a production like environment use the following commands:
 
 - `make image` to create the production image from the Dockerfile.
-- `make up` to start the application on port `8080` in the detached modus.
+- `make up` to start the application on port `8080`.
 - `make down` to terminate all running Docker processes.
 
 Go to `localhost:8080` in your browser.
