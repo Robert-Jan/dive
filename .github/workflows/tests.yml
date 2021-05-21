@@ -8,10 +8,8 @@ on:
 
 jobs:
   tests:
+    name: Run unit/integration tests
     runs-on: ubuntu-latest
-
-    env:
-      COMPOSE_INTERACTIVE_NO_CLI: 1
 
     steps:
       - name: Checkout code
