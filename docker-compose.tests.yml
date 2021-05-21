@@ -3,20 +3,12 @@ version: "3.8"
 services:
     app:
         image: robert-jan/dive:dev
+        environment: 
+            - "ConnectionStrings__PostgreSQL=Server=dive_db_1; Port=5432; Database=tests; Username=dive; Password=dive;"
         working_dir: /dive
-        entrypoint: dotnet test --logger:"trx;" -- xunit.parallelizeTestCollections=false
+        entrypoint: dotnet test /dive/tests/Integration/IntegrationTests.csproj --logger:"trx;LogFileName=log.integration.trx" -- xunit.parallelizeTestCollections=false
         volumes:
-            - test-storage:/dive/storage
             - ./src:/dive/src
-            - ./tests/.logs:/dive/tests/.logs
-            - ./tests/Unit:/dive/tests/Unit
             - ./tests/Integration:/dive/tests/Integration
-    db:
-        volumes:
-            - test-database:/var/lib/postgresql/data
-
-volumes:
-    test-storage:
-        driver: "local"
-    test-database:
-        driver: "local"
+            - ./tests/Artefacts:/dive/tests/Artefacts
+            

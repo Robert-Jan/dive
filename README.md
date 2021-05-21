@@ -42,4 +42,4 @@ The following options are available to debug the application while in developmen
 Run the following commands to update the database schema:
 
 - Open a shell into the running app container with `make shell`
-- Run the command `dotnet ef database update --no-build`. The "no build" flag is nessesery because the application is already running and a build will fail.
+- Run the command `dotnet ef database update --project "/dive/src/Dive.csproj" --msbuildprojectextensionspath "/dive/.obj/Dive" --no-build`. The "no build" flag is nessesery because the application is already running and a build will fail.

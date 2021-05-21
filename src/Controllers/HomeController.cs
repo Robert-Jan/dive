@@ -1,9 +1,8 @@
 ﻿using Dive.App.Data;
-using Dive.App.Models;
+using Dive.App.ViewModels;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
@@ -11,13 +10,10 @@ namespace Dive.App.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
         private readonly DiveContext _context;
 
-        public HomeController(ILogger<HomeController> logger, DiveContext context)
+        public HomeController(DiveContext context)
         {
-            _logger = logger;
             _context = context;
         }
 

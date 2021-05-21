@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Http;
 
@@ -27,11 +28,11 @@ namespace Dive.App
                 .Build();
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
             services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/dive/storage/keys"));
 
-            services.AddDbContext<DiveContext>(options => 
+            services.AddDbContext<DiveContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL")));
 
             services.AddIdentity<User, Role>()
@@ -49,9 +50,22 @@ namespace Dive.App
                 options.LogoutPath = "/logout";
                 options.Cookie.Name = "session";
                 options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.Strict;
             });
 
-            services.AddControllersWithViews();
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-CSRF-TOKEN";
+                options.FormFieldName = "csrf";
+                options.Cookie.Name = "csrf";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+            });
+
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
 
             services.Configure<RazorViewEngineOptions>(options =>
             {

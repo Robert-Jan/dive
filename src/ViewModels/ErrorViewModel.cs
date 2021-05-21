@@ -1,4 +1,4 @@
-namespace Dive.App.Models
+namespace Dive.App.ViewModels
 {
     public class ErrorViewModel
     {

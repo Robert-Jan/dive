@@ -36,6 +36,7 @@ RUN apk update && \
     apk add procps
 RUN curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l /vsdbg
 ENV DOTNET_USE_POLLING_FILE_WATCHER 1
+ENV SolutionDir /dive
 WORKDIR /dive
 COPY --from=resources-development /resources/style.css resources/wwwroot
 ENTRYPOINT dotnet watch run --urls=http://+:5000/ --project src/Dive.csproj

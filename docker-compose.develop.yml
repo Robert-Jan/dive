@@ -4,8 +4,10 @@ services:
     app:
         image: robert-jan/dive:dev
         environment:
+            SolutionDir: /dive
             ASPNETCORE_ENVIRONMENT: Development
         ports:
             - "5000:5000"
+            - "43887:43887"
         volumes:
             - ./src:/dive/src

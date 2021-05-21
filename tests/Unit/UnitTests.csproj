@@ -25,7 +25,7 @@
 
   <PropertyGroup>
     <VSTestLogger>trx</VSTestLogger>
-    <VSTestResultsDirectory>$(SolutionDir)\tests\.logs</VSTestResultsDirectory>
+    <VSTestResultsDirectory>$(SolutionDir)\tests\Artefacts</VSTestResultsDirectory>
   </PropertyGroup>
 
 </Project>
