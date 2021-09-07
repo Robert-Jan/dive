@@ -1,10 +1,10 @@
-.PHONY: dev-image image develop tests unit integration up down shell db
-
-dev-image:
-	@DOCKER_BUILDKIT=1 docker build --target develop -t rjvdelst/dive:dev .
+.PHONY: image dev-image develop tests unit integration up down shell db
 
 image:
 	@DOCKER_BUILDKIT=1 docker build --target final -t rjvdelst/dive .
+
+dev-image:
+	@DOCKER_BUILDKIT=1 docker build --target develop -t rjvdelst/dive:dev .
 
 develop:
 	@docker-compose -f docker-compose.yml -f docker-compose.develop.yml -p 'dive' up

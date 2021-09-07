@@ -38,7 +38,7 @@ RUN curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l /vsdbg
 ENV DOTNET_USE_POLLING_FILE_WATCHER 1
 ENV SolutionDir /dive
 WORKDIR /dive
-COPY --from=resources-development /resources/style.css resources/wwwroot
+COPY --from=resources-development /resources/style.css resources/wwwroot/css
 ENTRYPOINT dotnet watch run --urls=http://+:5000/ --project src/Dive.csproj
 
 ##
@@ -56,6 +56,6 @@ WORKDIR /dive
 COPY --from=sdk /dive/resources/wwwroot resources/wwwroot
 COPY --from=publish /dive/publish app
 COPY --from=sdk /dive/src/Properties app/Properties
-COPY --from=resources-production /resources/style.css resources/wwwroot
+COPY --from=resources-production /resources/style.css resources/wwwroot/css
 WORKDIR /dive/app
 ENTRYPOINT ["dotnet", "Dive.dll"]

@@ -4,6 +4,7 @@
     "production": "env NODE_ENV=production postcss tailwind.css -o style.css"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.3.3",
     "postcss-cli": "^8.3.1",
     "tailwindcss": "^2.0.2"
   }

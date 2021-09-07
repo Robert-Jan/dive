@@ -12,8 +12,10 @@ tarballs/
 test-results/
 
 # Resources
-Resources/node_modules/
-Resources/style.css
+Resources/vue/dist/
+Resources/vue/node_modules/
+Resources/style/node_modules/
+Resources/style/style.css
 
 # Mac bundle stuff
 *.dmg

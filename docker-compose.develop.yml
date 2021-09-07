@@ -8,6 +8,6 @@ services:
             ASPNETCORE_ENVIRONMENT: Development
         ports:
             - "5000:5000"
-            - "43887:43887"
+            - "39151:39151"
         volumes:
             - ./src:/dive/src

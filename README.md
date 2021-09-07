@@ -1,5 +1,5 @@
 # Dive
-Dive is a web based application to make Kanban boards in your browser. The purpose of this project is to learn new technologies for the author. The following technologies are used:
+Dive is a loose clone of Stack Overflow. The purpose of this project is to learn new technologies for the author. The following technologies are used:
 
 - Docker
 - ASP.NET Core 5
@@ -43,3 +43,7 @@ Run the following commands to update the database schema:
 
 - Open a shell into the running app container with `make shell`
 - Run the command `dotnet ef database update --project "/dive/src/Dive.csproj" --msbuildprojectextensionspath "/dive/.obj/Dive" --no-build`. The "no build" flag is nessesery because the application is already running and a build will fail.
+
+Run the following commands to generate a new migration:
+- Open a shell into the running app container with `make shell`
+- Run the command `dotnet ef migrations add [MIGRATION NAME] --output-dir Data/Migrations --project "/dive/src/Dive.csproj" --msbuildprojectextensionspath "/dive/.obj/Dive" --no-build`.
