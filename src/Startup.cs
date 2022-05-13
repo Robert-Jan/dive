@@ -1,7 +1,9 @@
 using System.IO;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Dive.App.Data;
+using Dive.App.Models;
 
 namespace Dive.App
 {
@@ -28,6 +32,30 @@ namespace Dive.App
 
         public virtual void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DiveContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL"));
+                options.UseSnakeCaseNamingConvention();
+            });
+
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<DiveContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/login";
+                options.LogoutPath = "/logout";
+                options.Cookie.Name = "session";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+            });
+
             services.AddAntiforgery(options =>
             {
                 options.HeaderName = "X-CSRF-TOKEN";
@@ -58,7 +86,7 @@ namespace Dive.App
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiveContext context)
         {
             if (env.IsDevelopment())
             {
@@ -66,6 +94,7 @@ namespace Dive.App
             }
             else
             {
+                context.Database.Migrate();
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
