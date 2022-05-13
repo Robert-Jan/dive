@@ -12,6 +12,8 @@ services:
             - storage:/dive/storage
         networks:
             - network
+        depends_on:
+            - db
     db:
         container_name: database
         image: postgres:alpine
