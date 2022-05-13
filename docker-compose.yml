@@ -12,11 +12,25 @@ services:
             - storage:/dive/storage
         networks:
             - network
-
+    db:
+        container_name: database
+        image: postgres:alpine
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: dive
+            POSTGRES_PASSWORD: dive
+            POSTGRES_DB: dive
+        volumes:
+            - database:/var/lib/postgresql/data
+        networks:
+            - network
 networks:
     network:
         driver: "bridge"
 
 volumes:
     storage:
+        driver: "local"
+    database:
         driver: "local"
