@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+    app:
+        image: rjvdelst/dive:dev
+        working_dir: /dive
+        entrypoint: dotnet test /dive/tests/Integration/IntegrationTests.csproj --logger:"trx;LogFileName=log.integration.trx" -- xunit.parallelizeTestCollections=false
+        volumes:
+            - ./src:/dive/src
+            - ./tests/Integration:/dive/tests/Integration
+            - ./tests/Artefacts:/dive/tests/Artefacts

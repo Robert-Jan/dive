@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+    app:
+        container_name: application
+        image: rjvdelst/dive:latest
+        environment:
+            - "ConnectionStrings__PostgreSQL=Server=database; Port=5432; Database=dive; Username=dive; Password=dive;"
+        ports:
+            - "8080:80"
+        volumes:
+            - storage:/dive/storage
+        networks:
+            - network
+
+networks:
+    network:
+        driver: "bridge"
+
+volumes:
+    storage:
+        driver: "local"

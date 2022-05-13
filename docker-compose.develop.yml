@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+    app:
+        image: rjvdelst/dive:dev
+        environment:
+            SolutionDir: /dive
+            ASPNETCORE_ENVIRONMENT: Development
+        ports:
+            - "5000:5000"
+        volumes:
+            - ./src:/dive/src
