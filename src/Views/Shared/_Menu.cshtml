@@ -1,0 +1,151 @@
+<nav class="bg-gray-800" x-data="{ menu: false, profile: false }">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <div class="hidden sm:block flex-shrink-0">
+                    <a href="/">
+                        <svg class="mx-auto h-8 w-auto text-indigo-500" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 10 56.998 35.998" fill="currentColor" stroke="none">
+                            <path
+                                d="M29.577 23.645l.393 6.242-4.116.26-.394-6.242 4.117-.26zm27.203 5.487c-2.105.217-3.576-2.611-3.576-7.678-1.736-1.567-9.93 6.998-9.93 6.998l.053.114c-1.854 1.298-3.744 2.539-5.633 3.781.945-2.646 1.854-5.31 2.645-8.012.023-.085.043-.167.059-.249l6.971-6.285c-4.646-1.889-2.869-4.509-7.938-6.621-1.513.453-3.106 9.394-3.433 11.299a2.582 2.582 0 00-.254.588c-.863 2.961-1.875 5.871-2.914 8.771-6.845-2.015-14.03-.954-20.877.779-3.567.903-3.578 5.048-1.507 6.978.266.463.739.817 1.46.942 4.128.714 7.784 2.435 11.189 4.847 2.515 1.778 4.894-2.354 2.405-4.117a35.431 35.431 0 00-3.673-2.27c3.534-.334 7.06-.098 10.574 1.225 1.531.574 3.226-.172 4.222-1.398 3.272-2.29 6.688-4.375 9.937-6.706a2.6 2.6 0 00.235-.192c3.618-.917 11.624-2.963 9.985-2.794zM6.082 34.718c1.784-3.654 3.775-3.646 6.487-3.64 1.178.005 2.5.01 3.892-.332l8.643-.546-.394-6.244-11.19.706a3.128 3.128 0 00-2.594 4.534c-2.443.133-4.85.904-6.763 5.123a4.253 4.253 0 00-3.917 2.884 4.238 4.238 0 00.333 3.468L0 42.38l4.03 1.367.312-.923c.179-.003.356-.017.532-.042.622.55 1.567.566 2.204.003a1.66 1.66 0 00.526-1.565c.298-.373.541-.802.704-1.281a4.256 4.256 0 00-2.226-5.221z" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="hidden lg:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                        <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                            aria-current="page">Questions</a>
+                        <a href="#"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tags</a>
+                        <a href="#"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Users</a>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center lg:ml-6">
+                <div class="flex items-center px-3 py-2 mr-2 text-gray-400 bg-gray-600 rounded">
+                    <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" placeholder="Search..." class="p-0 border-0 bg-transparent focus:outline-none">
+                </div>
+                <!-- Profile dropdown -->
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="hidden lg:block ml-3 relative">
+                        <div>
+                            <button type="button" x-on:click="profile = !profile"
+                            class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                            id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                <span class="sr-only">Open user menu</span>
+                                <img class="h-8 w-8 rounded-full" src="" alt="avatar">
+                            </button>
+                        </div>
+                        <div x-cloak x-show="profile" x-on:click.away="profile = false"
+                        class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                            id="user-menu-item-0">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                            id="user-menu-item-1">Settings</a>
+                            <a href="/logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                            id="user-menu-item-2">Sign out</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="hidden lg:flex ml-4 space-x-2">
+                        <a href="/login"
+                        class="block px-4 py-2 text-gray-300 bg-gray-700 hover:text-gray-400 hover:bg-gray-900 rounded">
+                            Login
+                        </a>
+                        <a href="/register"
+                        class="block px-4 py-2 text-indigo-300 bg-indigo-700 hover:text-indigo-400 hover:bg-indigo-800 rounded">
+                            Register
+                        </a>
+                    </div>
+                }
+            </div>
+            <div class="-mr-2 flex lg:hidden">
+                <!-- Mobile menu button -->
+                <button type="button" x-on:click="menu = !menu"
+                    class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg x-cloak x-show="!menu" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg x-cloak x-show="menu" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu, show/hide based on menu state. -->
+    <div class="lg:hidden" x-cloak x-show="menu" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+            <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                aria-current="page">Questions</a>
+            <a href="#"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Tags</a>
+            <a href="#"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Users</a>
+        </div>
+        <div class="pt-4 pb-3 border-t border-gray-700">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="flex items-center px-5">
+                    <div class="flex-shrink-0">
+                        <img class="h-10 w-10 rounded-full"
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        alt="">
+                    </div>
+                    <div class="ml-3">
+                        <div class="text-base font-medium leading-none text-white">Tom Cook</div>
+                        <div class="text-sm font-medium leading-none text-gray-400">tom@example.com</div>
+                    </div>
+                    <button type="button"
+                    class="ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span class="sr-only">View notifications</span>
+                        <!-- Heroicon name: outline/bell -->
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-3 px-2 space-y-1">
+                    <a href="#"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Your
+                        Profile</a>
+                    <a href="#"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Settings</a>
+                    <a href="/logout"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Sign
+                        out</a>
+                </div>
+            }
+            else
+            {
+                <div class="px-2 space-y-1">
+                    <a href="/login"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Login</a>
+                    <a href="/register"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Register</a>
+                </div>
+            }
+        </div>
+    </div>
+</nav>
