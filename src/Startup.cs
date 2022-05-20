@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationM
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Dive.App.Data;
 using Dive.App.Models;
+using Dive.App.ActionFilters;
+using Dive.App.Repositories;
 
 namespace Dive.App
 {
@@ -32,6 +34,14 @@ namespace Dive.App
 
         public virtual void ConfigureServices(IServiceCollection services)
         {
+            services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/dive/storage/DataProtectionKeys"))
+                .SetApplicationName("Dive")
+                .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration()
+                {
+                    EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+                    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+                });
+
             services.AddDbContext<DiveContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL"));
@@ -65,17 +75,10 @@ namespace Dive.App
                 options.Cookie.SameSite = SameSiteMode.Strict;
             });
 
-            services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/dive/storage/DataProtectionKeys"))
-                .SetApplicationName("Dive")
-                .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration()
-                {
-                    EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
-                    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
-                });
-
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                options.Filters.Add<ViewBagActionFilter>();
             });
 
             services.Configure<RazorViewEngineOptions>(options =>
@@ -84,6 +87,8 @@ namespace Dive.App
                 options.ViewLocationFormats.Add("/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
                 options.ViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
             });
+
+            services.AddTransient<IUserRepository, EFUserRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiveContext context)
@@ -107,6 +112,9 @@ namespace Dive.App
             });
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
