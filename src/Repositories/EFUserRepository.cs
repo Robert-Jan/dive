@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using System.Linq;
 using Dive.App.Data;
 using Dive.App.Models;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,22 @@ namespace Dive.App.Repositories
         public Task<User> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+        }
+
+        public Task<int> UpdateUserAsync(int id, string email, string firstName, string lastName)
+        {
+            var user = _context.Users.Where(u => u.Id == id).First();
+
+            user.Email = email;
+            user.FirstName = firstName;
+            user.LastName = lastName;
+
+            return _context.SaveChangesAsync();
+        }
+
+        public async Task<IdentityResult> UpdatePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
         }
     }
 }
