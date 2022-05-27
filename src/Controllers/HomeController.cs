@@ -1,11 +1,10 @@
 ﻿using Dive.App.ViewModels;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dive.App.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         [HttpGet("/")]
         public IActionResult Index()

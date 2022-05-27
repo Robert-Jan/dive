@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Dive.App.Controllers
 {
-    public class AuthenticationController : Controller
+    public class AuthenticationController : BaseController
     {
         private readonly UserManager<User> _userManager;
 
@@ -36,6 +36,8 @@ namespace Dive.App.Controllers
 
                 if (signInResult.Succeeded)
                 {
+                    SetNotification("Success", "Welcome back!");
+
                     return returnUrl == "" || returnUrl == null
                         ? RedirectToAction(nameof(HomeController.Index), "Home")
                         : Redirect(returnUrl);

@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -23,9 +24,9 @@ namespace Dive.Tests.Integration
                 new Claim(ClaimTypes.Name, "john"),
             };
 
-            var identity = new ClaimsIdentity(claims, Scheme.Name);
+            var identity = new ClaimsIdentity(claims, "TestAuthentication");
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, Scheme.Name);
+            var ticket = new AuthenticationTicket(principal, "TestAuthentication");
 
             return await Task.FromResult(AuthenticateResult.Success(ticket));
         }

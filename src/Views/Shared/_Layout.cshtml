@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <link rel="stylesheet" href="/css/style.css">
+    <script defer src="https://unpkg.com/@@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
@@ -35,7 +36,8 @@
             &copy; @DateTime.Now.Year.ToString() Dive. All rights reserved.
         </p>
     </footer>
-    <div id="model"></div>
+    <div id="modal"></div>
+    <partial name="_Notifications" />
     @RenderSection("Scripts", required: false)
 </body>
 

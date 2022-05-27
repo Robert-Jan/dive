@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Dive.App.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,8 @@ namespace Dive.App.ActionFilters
                 controller.ViewBag.CurrentUser = context.HttpContext.User.Identity.IsAuthenticated
                     ? _userRepository.GetCurrentUser()
                     : null;
+
+                controller.ViewBag.Notifications = controller.TempData["Notifications"] ?? new List<string>();
             }
 
             base.OnResultExecuting(context);
