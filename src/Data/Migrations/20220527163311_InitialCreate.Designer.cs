@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dive.Data.Migrations
 {
     [DbContext(typeof(DiveContext))]
-    [Migration("20220513131712_InitialCreate")]
+    [Migration("20220527163311_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,60 @@ namespace Dive.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Dive.App.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AcceptedAnswerId")
+                        .HasColumnType("integer")
+                        .HasColumnName("accepted_answer_id");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("text")
+                        .HasColumnName("body");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_date");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("integer")
+                        .HasColumnName("parent_id");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnName("type");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_posts");
+
+                    b.HasIndex("AcceptedAnswerId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_posts_accepted_answer_id");
+
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_posts_parent_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_posts_user_id");
+
+                    b.ToTable("posts", (string)null);
+                });
 
             modelBuilder.Entity("Dive.App.Models.Role", b =>
                 {
@@ -56,6 +110,25 @@ namespace Dive.Data.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("roles", (string)null);
+                });
+
+            modelBuilder.Entity("Dive.App.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_tags");
+
+                    b.ToTable("tags", (string)null);
                 });
 
             modelBuilder.Entity("Dive.App.Models.User", b =>
@@ -272,6 +345,53 @@ namespace Dive.Data.Migrations
                     b.ToTable("user_tokens", (string)null);
                 });
 
+            modelBuilder.Entity("PostTag", b =>
+                {
+                    b.Property<int>("PostsId")
+                        .HasColumnType("integer")
+                        .HasColumnName("posts_id");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("integer")
+                        .HasColumnName("tags_id");
+
+                    b.HasKey("PostsId", "TagsId")
+                        .HasName("pk_post_tag");
+
+                    b.HasIndex("TagsId")
+                        .HasDatabaseName("ix_post_tag_tags_id");
+
+                    b.ToTable("post_tag", (string)null);
+                });
+
+            modelBuilder.Entity("Dive.App.Models.Post", b =>
+                {
+                    b.HasOne("Dive.App.Models.Post", "AcceptedAnswer")
+                        .WithOne()
+                        .HasForeignKey("Dive.App.Models.Post", "AcceptedAnswerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_posts_posts_accepted_answer_id");
+
+                    b.HasOne("Dive.App.Models.Post", "Parent")
+                        .WithMany("Anwsers")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_posts_posts_parent_id");
+
+                    b.HasOne("Dive.App.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_posts_users_user_id");
+
+                    b.Navigation("AcceptedAnswer");
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Dive.App.Models.Role", null)
@@ -327,6 +447,28 @@ namespace Dive.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_user_tokens_users_user_id");
+                });
+
+            modelBuilder.Entity("PostTag", b =>
+                {
+                    b.HasOne("Dive.App.Models.Post", null)
+                        .WithMany()
+                        .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_post_tag_posts_posts_id");
+
+                    b.HasOne("Dive.App.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_post_tag_tags_tags_id");
+                });
+
+            modelBuilder.Entity("Dive.App.Models.Post", b =>
+                {
+                    b.Navigation("Anwsers");
                 });
 #pragma warning restore 612, 618
         }

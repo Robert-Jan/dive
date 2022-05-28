@@ -1,0 +1,101 @@
+@{
+    ViewData["Title"] = "Ask a public question";
+}
+<div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
+        <div class="px-4 sm:px-0">
+            <h3 class="text-lg font-medium leading-6 text-gray-900">Draft your question</h3>
+            <p class="mt-1 text-sm text-gray-600">
+                Include details about your goal, describe expected and actual results and Include any error
+                messages.
+            </p>
+            <h3 class="mt-3 text-md font-medium leading-6 text-gray-900">1. Summerize the problem</h3>
+            <p class="text-sm text-gray-600">
+                Use a permanent address where you can receive mail.
+            </p>
+            <h3 class="mt-3 text-md font-medium leading-6 text-gray-900">2. Describe what you tried</h3>
+            <p class="text-sm text-gray-600">
+                Show what you’ve tried and tell us what you found (on this site or elsewhere) and why it didn’t meet
+                your needs. You can get better answers when you provide research.
+            </p>
+            <h3 class="mt-3 text-md font-medium leading-6 text-gray-900">3. Show some code</h3>
+            <p class="text-sm text-gray-600">
+                When appropriate, share the minimum amount of code others need to reproduce your problem.
+            </p>
+        </div>
+    </div>
+    <div class="mt-5 md:mt-0 md:col-span-2">
+        <form action="/ask" method="POST">
+            @Html.AntiForgeryToken()
+            <div class="shadow overflow-hidden sm:rounded-md">
+                <div class="px-4 py-5 bg-white sm:p-6">
+                    <div class="grid grid-cols-6 gap-6">
+                        <div class="col-span-6">
+                            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                            <span class="block text-xs text-gray-500">
+                                Be specific and imagine you’re asking a question to another person
+                            </span>
+                            <input type="text" name="title" maxlength="300" id="title"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div class="col-span-6">
+                            <label for="body" class="block text-sm font-medium text-gray-700">Describe your
+                                problem</label>
+                            <span class="block mb-1 text-xs text-gray-500">
+                                Include all the information someone would need to answer your question
+                            </span>
+                            <textarea id="smde" name="body" class="CodeMirror"></textarea>
+                        </div>
+
+                        <div class="col-span-6" x-data="{tags: [], newTag: ''}">
+                            <template x-for="tag in tags">
+                                <input type="hidden" name="tags[]" x-bind:value="tag">
+                            </template>
+                            <label for="tags" class="block text-sm font-medium text-gray-700">Tags</label>
+                            <span class="block text-xs text-gray-500">
+                                Add up to 5 tags to describe what your question is about
+                            </span>
+                            <div
+                                class="flex flex-wrap w-full mt-1 px-2 pt-2 shadow-sm border border-gray-300 rounded-md">
+                                <template x-for="tag in tags" :key="tag">
+                                    <div class="mr-2 mb-2 px-1 rounded bg-indigo-100">
+                                        <span x-text="tag"></span>
+                                        <button type="button" class="tags-input-remove"
+                                            x-on:click="tags = tags.filter(i => i !== tag)">
+                                            &times;
+                                        </button>
+                                    </div>
+                                </template>
+                                <input id="tags" class="mb-2" placeholder="Add tag..." x-show="tags.length < 5"
+                                    x-on:keydown.enter.prevent="if (newTag.trim() !== '' && !tags.includes(newTag.trim())) tags.push(newTag.trim()); newTag = ''"
+                                    x-on:keydown.backspace="if (newTag === '') tags.pop();" x-model="newTag">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                    <button type="submit"
+                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Post question
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+<link rel="stylesheet" href="/vendor/simplemde/style.css">
+<script src="/vendor/simplemde/scripts.js"></script>
+<script>
+    new SimpleMDE({
+        element: document.getElementById("smde"),
+        spellChecker: false,
+        promptURLs: true,
+        toolbar: ["bold", "italic", "strikethrough", "quote", "|", "code", "link", "image", "|", "preview", "guide"],
+        autosave: { enabled: false },
+        status: false
+    });
+</script>
+}
