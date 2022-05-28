@@ -26,6 +26,19 @@ namespace Dive.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "tags",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_tags", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -68,6 +81,43 @@ namespace Dive.Data.Migrations
                         name: "fk_role_claims_roles_role_id",
                         column: x => x.role_id,
                         principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "posts",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    type = table.Column<int>(type: "integer", nullable: false),
+                    accepted_answer_id = table.Column<int>(type: "integer", nullable: true),
+                    parent_id = table.Column<int>(type: "integer", nullable: true),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    title = table.Column<string>(type: "text", nullable: true),
+                    body = table.Column<string>(type: "text", nullable: true),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_posts", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_posts_posts_accepted_answer_id",
+                        column: x => x.accepted_answer_id,
+                        principalTable: "posts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "fk_posts_posts_parent_id",
+                        column: x => x.parent_id,
+                        principalTable: "posts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "fk_posts_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -157,6 +207,51 @@ namespace Dive.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "post_tag",
+                columns: table => new
+                {
+                    posts_id = table.Column<int>(type: "integer", nullable: false),
+                    tags_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_post_tag", x => new { x.posts_id, x.tags_id });
+                    table.ForeignKey(
+                        name: "fk_post_tag_posts_posts_id",
+                        column: x => x.posts_id,
+                        principalTable: "posts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_post_tag_tags_tags_id",
+                        column: x => x.tags_id,
+                        principalTable: "tags",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_post_tag_tags_id",
+                table: "post_tag",
+                column: "tags_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_posts_accepted_answer_id",
+                table: "posts",
+                column: "accepted_answer_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_posts_parent_id",
+                table: "posts",
+                column: "parent_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_posts_user_id",
+                table: "posts",
+                column: "user_id");
+
             migrationBuilder.CreateIndex(
                 name: "ix_role_claims_role_id",
                 table: "role_claims",
@@ -198,6 +293,9 @@ namespace Dive.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "post_tag");
+
+            migrationBuilder.DropTable(
                 name: "role_claims");
 
             migrationBuilder.DropTable(
@@ -211,6 +309,12 @@ namespace Dive.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "user_tokens");
+
+            migrationBuilder.DropTable(
+                name: "posts");
+
+            migrationBuilder.DropTable(
+                name: "tags");
 
             migrationBuilder.DropTable(
                 name: "roles");

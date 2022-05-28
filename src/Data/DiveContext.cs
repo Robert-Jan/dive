@@ -23,8 +23,18 @@ namespace Dive.App.Data
             builder.Entity<IdentityRoleClaim<int>>(entity => entity.ToTable(name: "role_claims"));
             builder.Entity<IdentityUserRole<int>>(entity => entity.ToTable(name: "user_roles"));
             builder.Entity<IdentityUserToken<int>>(entity => entity.ToTable(name: "user_tokens"));
+
+            builder.Entity<Post>().HasOne(p => p.AcceptedAnswer).WithOne()
+                .HasForeignKey<Post>(p => p.AcceptedAnswerId).OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Post>().HasMany(p => p.Anwsers).WithOne(p => p.Parent)
+                .HasForeignKey(p => p.ParentId).OnDelete(DeleteBehavior.Restrict);
         }
 
         public override DbSet<User> Users { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
+
+        public DbSet<Tag> Tags { get; set; }
     }
 }

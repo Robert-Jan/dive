@@ -88,6 +88,8 @@ namespace Dive.App
                 options.ViewLocationFormats.Add("/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
             });
 
+            services.AddTransient<IPostRepository, EFPostRepository>();
+            services.AddTransient<ITagRepository, EFTagRepository>();
             services.AddTransient<IUserRepository, EFUserRepository>();
         }
 
