@@ -19,14 +19,14 @@ namespace Dive.App.Repositories
             _tagRepository = tagRepository;
         }
 
-        public Task<List<Post>> GetNewestPostsAsync()
+        public Task<PagedResult<Post>> GetNewestPostsAsync(int page = 1)
         {
             return _context.Posts
                 .Where(p => p.ParentId == null)
                 .Include(p => p.Tags)
                 .Include(p => p.User)
                 .OrderByDescending(p => p.CreatedDate)
-                .ToListAsync();
+                .GetPagedAsync(page, 10);
         }
 
         public Task<int> StorePostAsync(Post post, User user)

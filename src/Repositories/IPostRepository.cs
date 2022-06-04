@@ -1,12 +1,12 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Dive.App.Data;
 using Dive.App.Models;
 
 namespace Dive.App.Repositories
 {
     public interface IPostRepository
     {
-        Task<List<Post>> GetNewestPostsAsync();
+        Task<PagedResult<Post>> GetNewestPostsAsync(int page = 1);
 
         Task<int> StorePostAsync(Post post, User user);
 

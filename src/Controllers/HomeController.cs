@@ -1,15 +1,38 @@
 ﻿using Dive.App.ViewModels;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Dive.App.Repositories;
+using System.Threading.Tasks;
+using Dive.App.Models;
+using Dive.App.Data;
 
 namespace Dive.App.Controllers
 {
     public class HomeController : BaseController
     {
-        [HttpGet("/")]
-        public IActionResult Index()
+        private readonly IPostRepository _postRepository;
+
+        public HomeController(IPostRepository postRepository)
         {
-            return View();
+            _postRepository = postRepository;
+        }
+
+        [HttpGet("/")]
+        public async Task<IActionResult> Index(int page = 1, string filter = "newest")
+        {
+            PagedResult<Post> posts = filter switch
+            {
+                "newest" => await _postRepository.GetNewestPostsAsync(page),
+                "unanswered" => await _postRepository.GetNewestPostsAsync(page),
+                "activity" => await _postRepository.GetNewestPostsAsync(page),
+                _ => await _postRepository.GetNewestPostsAsync(page)
+            };
+
+            return View(new HomeViewModel
+            {
+                CurrentFilter = filter,
+                Posts = posts
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
