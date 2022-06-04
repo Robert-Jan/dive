@@ -31,7 +31,9 @@ namespace Dive.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: true)
+                    name = table.Column<string>(type: "text", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,7 +48,7 @@ namespace Dive.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     first_name = table.Column<string>(type: "text", nullable: true),
                     last_name = table.Column<string>(type: "text", nullable: true),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -95,9 +97,10 @@ namespace Dive.Data.Migrations
                     accepted_answer_id = table.Column<int>(type: "integer", nullable: true),
                     parent_id = table.Column<int>(type: "integer", nullable: true),
                     user_id = table.Column<int>(type: "integer", nullable: false),
-                    title = table.Column<string>(type: "text", nullable: true),
+                    title = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     body = table.Column<string>(type: "text", nullable: true),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

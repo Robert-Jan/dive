@@ -1,6 +1,6 @@
 namespace Dive.App.ViewModels
 {
-    public class ErrorViewModel
+    public class ErrorViewModel : BaseViewModel
     {
         public string RequestId { get; set; }
 

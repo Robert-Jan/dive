@@ -2,7 +2,6 @@ using System;
 using System.Text;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dive.App.Models
 {
@@ -14,8 +13,7 @@ namespace Dive.App.Models
         [PersonalData]
         public string LastName { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public string Avatar(int size = 200)
         {

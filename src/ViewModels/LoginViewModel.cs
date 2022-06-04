@@ -1,6 +1,6 @@
 namespace Dive.App.ViewModels
 {
-    public class LoginViewModel
+    public class LoginViewModel : BaseViewModel
     {
         public bool LoginFailed = false;
 
