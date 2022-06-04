@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dive.App.Data;
 using Dive.App.Models;
@@ -25,7 +24,28 @@ namespace Dive.App.Repositories
                 .Where(p => p.ParentId == null)
                 .Include(p => p.Tags)
                 .Include(p => p.User)
-                .OrderByDescending(p => p.CreatedDate)
+                .OrderByDescending(p => p.CreatedAt)
+                .GetPagedAsync(page, 10);
+        }
+
+        public Task<PagedResult<Post>> GetUnansweredPostsAsync(int page = 1)
+        {
+            return _context.Posts
+                .Where(p => p.ParentId == null)
+                .Where(p => p.AcceptedAnswerId == null)
+                .Include(p => p.Tags)
+                .Include(p => p.User)
+                .OrderByDescending(p => p.CreatedAt)
+                .GetPagedAsync(page, 10);
+        }
+
+        public Task<PagedResult<Post>> GetPostsWithRecentActivityAsync(int page = 1)
+        {
+            return _context.Posts
+                .Where(p => p.ParentId == null)
+                .Include(p => p.Tags)
+                .Include(p => p.User)
+                .OrderByDescending(p => p.UpdatedAt)
                 .GetPagedAsync(page, 10);
         }
 

@@ -23,8 +23,8 @@ namespace Dive.App.Controllers
             PagedResult<Post> posts = filter switch
             {
                 "newest" => await _postRepository.GetNewestPostsAsync(page),
-                "unanswered" => await _postRepository.GetNewestPostsAsync(page),
-                "activity" => await _postRepository.GetNewestPostsAsync(page),
+                "unanswered" => await _postRepository.GetUnansweredPostsAsync(page),
+                "activity" => await _postRepository.GetPostsWithRecentActivityAsync(page),
                 _ => await _postRepository.GetNewestPostsAsync(page)
             };
 

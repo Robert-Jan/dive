@@ -4,7 +4,7 @@ using Dive.App.Models;
 
 namespace Dive.App.ViewModels
 {
-    public class HomeViewModel
+    public class HomeViewModel : BaseViewModel
     {
         public List<KeyValuePair<string, string>> Filters = new()
         {

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dive.Data.Migrations
 {
     [DbContext(typeof(DiveContext))]
-    [Migration("20220527163311_InitialCreate")]
+    [Migration("20220604094030_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,22 +41,26 @@ namespace Dive.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("body");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date");
+                        .HasColumnName("created_at");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer")
                         .HasColumnName("parent_id");
 
                     b.Property<string>("Title")
-                        .HasColumnType("text")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)")
                         .HasColumnName("title");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
                         .HasColumnName("type");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
@@ -121,9 +125,17 @@ namespace Dive.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("pk_tags");
@@ -149,10 +161,9 @@ namespace Dive.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("concurrency_stamp");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_date");
+                        .HasColumnName("created_at");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)

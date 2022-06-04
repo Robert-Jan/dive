@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Dive.App.ViewModels
 {
-    public class PagingViewModel
+    public class PagingViewModel : BaseViewModel
     {
         public PagingMeta Meta { get; set; }
 

@@ -4,9 +4,11 @@ using System.Text.RegularExpressions;
 
 namespace Dive.App.ViewModels
 {
-    public class PostViewModel
+    public class PostViewModel : BaseViewModel
     {
         public Post Post;
+
+        public string Timestamp => TimeZoneInfo.ConvertTime(Post.CreatedAt, Timezone).ToString("dd-MM-yyyy HH:mm");
 
         public string Summary()
         {

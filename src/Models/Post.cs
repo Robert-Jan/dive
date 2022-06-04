@@ -11,10 +11,8 @@ namespace Dive.App.Models
         Answer = 2,
     }
 
-    public class Post
+    public class Post : BaseModel
     {
-        public int Id { get; set; }
-
         public PostType Type { get; set; }
 
         public int? AcceptedAnswerId { get; set; }
@@ -36,9 +34,6 @@ namespace Dive.App.Models
         public string Body { get; set; }
 
         public virtual ICollection<Tag> Tags { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
         public Post()
         {
