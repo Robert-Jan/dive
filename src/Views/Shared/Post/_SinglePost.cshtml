@@ -1,0 +1,61 @@
+@model Dive.App.ViewModels.PostViewModel
+
+<div class="flex flex-col md:flex-row md:space-x-6 w-full px-8 py-6">
+    <div class="flex md:flex-col justify-between flex-shrink-0 w-24 mb-2 md:m-0 text-xs text-gray-400">
+        <div class="flex items-end mr-3 md:m-0">
+            <span class="md:-mb-1 mr-1 text-gray-900 md:text-lg">12</span>
+            votes
+        </div>
+        <div class="flex items-end mr-3 md:m-0">
+            <span class="md:-mb-1 mr-1 text-gray-900 md:text-lg">2</span>
+            anwsers
+        </div>
+        <div class="flex items-end">
+            <span class="md:-mb-1 mr-1 text-gray-900 md:text-lg">25212</span>
+            views
+        </div>
+    </div>
+    <div class="w-full">
+        <a href="/questions/@Model.Post.Id" class="md:text-lg font-medium text-indigo-800 hover:text-indigo-600">
+            @Model.Post.Title
+        </a>
+        <p class="mt-1 text-sm text-gray-700">
+            @Model.Summary()
+        </p>
+        <div class="flex mt-2">
+            @foreach (Tag tag in @Model.Post.Tags)
+            {
+                <div class="mr-1 px-3 border rounded-full">
+                    @tag.Name
+                </div>
+            }
+        </div>
+    </div>
+    <div class="flex flex-row md:flex-col flex-shrink-0 flex-grow-0 md:w-32 mt-3 md:m-0 text-sm">
+        <img class="hidden md:block h-12 w-12 mx-auto rounded-full" src="@Model.Post.User.Avatar()" alt="Avatar">
+        <div class="hidden md:block w-full md:my-2 text-center text-gray-500">
+            @Model.Post.User.FirstName
+        </div>
+        <div class="hidden md:flex flex-grow-0 md:mx-auto space-x-2">
+            <div class="flex flex-grow-0 space-x-1 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                </svg>
+                <span class="mx-1">33</span>
+            </div>
+            <div class="flex space-x-1 text-center ">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="mx-1">333</span>
+            </div>
+        </div>
+        <div class="md:w-full md:mt-2 text-center text-xs text-gray-400">
+            @Model.Post.CreatedDate.ToLocalTime().ToString("dd-MM-yyyy HH:mm")
+        </div>
+    </div>
+</div>

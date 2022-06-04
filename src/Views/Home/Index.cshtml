@@ -1,6 +1,30 @@
-﻿@{
-    ViewData["Title"] = "Recent questions";
+﻿@model Dive.App.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = Model.Filters.Find(x => x.Key == Model.CurrentFilter).Value;
 }
-<div>
-    Hello .NET
+<div class="flex items-center justify-between">
+    <div class="flex space-x-2">
+        @foreach (KeyValuePair<string, string> filter in Model.Filters)
+        {
+            <a href="@Url.Action("Index", new { filter = filter.Key, page = 1 })"
+            class="py-1 px-5 rounded-full @(Model.CurrentFilter == filter.Key ? "bg-indigo-500 text-white" : "bg-gray-300")">
+                @filter.Value
+            </a>
+        }
+    </div>
+    <div>
+        <a href="/ask"
+            class="block px-4 py-2 text-indigo-300 bg-indigo-700 hover:text-indigo-400 hover:bg-indigo-800 rounded">
+            Ask question
+        </a>
+    </div>
 </div>
+
+<div class="flex flex-col my-8 divide-y shadow sm:rounded-md bg-white">
+    @foreach (Post post in Model.Posts.Results)
+    {
+        <partial name="Post/_SinglePost" model="new Dive.App.ViewModels.PostViewModel{ Post = post }" />
+    }
+</div>
+
+<partial name="_Paging" model="new Dive.App.ViewModels.PagingViewModel{ Meta = Model.Posts.Meta }" />
