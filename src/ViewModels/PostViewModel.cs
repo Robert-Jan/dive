@@ -1,4 +1,5 @@
 using System;
+using Markdig;
 using Dive.App.Models;
 using System.Text.RegularExpressions;
 
@@ -10,24 +11,27 @@ namespace Dive.App.ViewModels
 
         public string Timestamp => TimeZoneInfo.ConvertTime(Post.CreatedAt, Timezone).ToString("dd-MM-yyyy HH:mm");
 
+        public string GetMarkdown()
+        {
+            var pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
+                .UseSoftlineBreakAsHardlineBreak()
+                .Build();
+
+            return Markdown.ToHtml(Post.Body ?? "", pipeline);
+        }
+
         public string Summary()
         {
-            string content = Post.Body;
+            // Remove HTML elements
+            var raw = Regex.Replace(GetMarkdown(), "<.*?>|&.*?;", string.Empty);
 
-            // Remove markdown elements
-            content = Regex.Replace(content, "/\n={2,}/g", "\n");
-            content = Regex.Replace(content, "/~~/g", string.Empty);
-            content = Regex.Replace(content, "/`{3}.*\n/g", string.Empty);
-            content = Regex.Replace(content, "/<[^>]*>/g", string.Empty);
-            content = Regex.Replace(content, "/^[=\\-]{2,}\\s*$/g", string.Empty);
-            content = Regex.Replace(content, "/\\[\\^.+?\\](\\: .*?$)?/g", string.Empty);
-            content = Regex.Replace(content, "/\\s{0,2}\\[.*?\\]: .*?$/g", string.Empty);
-            content = Regex.Replace(content, "/\\!\\[.*?\\][\\[\\(].*?[\\]\\)]/g", string.Empty);
-            content = Regex.Replace(content, "/\\[(.*?)\\][\\[\\(].*?[\\]\\)]/g", "$1");
+            // Remove whitespaces
+            raw = raw.Replace("\n", "").Replace("\r", "");
 
-            return !String.IsNullOrWhiteSpace(content) && content.Length > 200
-                ? content[..200] + "..."
-                : content;
+            return !String.IsNullOrWhiteSpace(raw) && raw.Length > 200
+                ? raw[..200] + "..."
+                : raw;
         }
     }
 }
