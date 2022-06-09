@@ -25,6 +25,8 @@ test/unit: ## Run unit tests
 	-v "$(shell pwd)/src":/dive/src \
 	-v "$(shell pwd)/tests/Unit":/dive/tests/Unit \
 	-v "$(shell pwd)/tests/Artefacts":/dive/tests/Artefacts \
+	--rm \
+	--name "dive-unit-tests" \
 	--entrypoint "dotnet" \
 	rjvdelst/dive:dev \
 	test /dive/tests/Unit/UnitTests.csproj --logger:'trx;LogFileName=log.unit.trx'
