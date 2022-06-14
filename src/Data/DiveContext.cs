@@ -31,6 +31,8 @@ namespace Dive.App.Data
                 .HasForeignKey(p => p.ParentId).OnDelete(DeleteBehavior.Restrict);
         }
 
+        public DbSet<Comment> Comments { get; set; }
+
         public override DbSet<User> Users { get; set; }
 
         public DbSet<Post> Posts { get; set; }

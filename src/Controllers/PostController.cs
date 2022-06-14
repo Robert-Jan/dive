@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dive.App.Models;
 using Dive.App.Repositories;
+using Dive.App.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,19 @@ namespace Dive.App.Controllers
         {
             _userRepository = userRepository;
             _postRepository = postRepository;
+        }
+
+        [HttpGet("/questions/{id}")]
+        public async Task<IActionResult> Post(int id)
+        {
+            var post = await _postRepository.GetPostDetailsAsync(id);
+
+            if (post == null) return NotFound();
+
+            return View(new PostViewModel
+            {
+                Post = post
+            });
         }
 
         [Authorize]
@@ -38,10 +52,29 @@ namespace Dive.App.Controllers
 
                 SetNotification("Success", "Your question is successfully created");
 
-                return Redirect("/");
+                return RedirectToAction(nameof(Post), new { id = post.Id });
             }
 
             return View();
+        }
+
+        [Authorize]
+        [HttpPost("/questions/{id}/anwser")]
+        public async Task<IActionResult> Anwser(int id, [Bind("Body")] Post anwser)
+        {
+            var post = await _postRepository.GetByIdAsync(id);
+
+            if (post == null || post.ParentId != null) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                User user = await _userRepository.GetCurrentUserAsync();
+                await _postRepository.StoreAnwserAsync(post, anwser, user);
+
+                SetNotification("Success", "Your anwser is successfully added");
+            }
+
+            return RedirectToAction(nameof(Post), new { id = post.Id });
         }
     }
 }
