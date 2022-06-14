@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dive.Data.Migrations
 {
     [DbContext(typeof(DiveContext))]
-    [Migration("20220604094030_InitialCreate")]
+    [Migration("20220613191527_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,47 @@ namespace Dive.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Dive.App.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Body")
+                        .HasColumnType("text")
+                        .HasColumnName("body");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("integer")
+                        .HasColumnName("post_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_comments");
+
+                    b.HasIndex("PostId")
+                        .HasDatabaseName("ix_comments_post_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_comments_user_id");
+
+                    b.ToTable("comments", (string)null);
+                });
 
             modelBuilder.Entity("Dive.App.Models.Post", b =>
                 {
@@ -375,6 +416,23 @@ namespace Dive.Data.Migrations
                     b.ToTable("post_tag", (string)null);
                 });
 
+            modelBuilder.Entity("Dive.App.Models.Comment", b =>
+                {
+                    b.HasOne("Dive.App.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .HasConstraintName("fk_comments_posts_post_id");
+
+                    b.HasOne("Dive.App.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("fk_comments_users_user_id");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Dive.App.Models.Post", b =>
                 {
                     b.HasOne("Dive.App.Models.Post", "AcceptedAnswer")
@@ -480,6 +538,8 @@ namespace Dive.Data.Migrations
             modelBuilder.Entity("Dive.App.Models.Post", b =>
                 {
                     b.Navigation("Anwsers");
+
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

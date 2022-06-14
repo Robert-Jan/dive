@@ -49,6 +49,28 @@ namespace Dive.App.Repositories
                 .GetPagedAsync(page, 10);
         }
 
+        public Task<Post> GetByIdAsync(int id)
+        {
+            return _context.Posts
+                .Where(p => p.Id == id)
+                .FirstAsync();
+        }
+
+        public Task<Post> GetPostDetailsAsync(int id)
+        {
+            return _context.Posts
+                .Where(p => p.ParentId == null)
+                .Where(p => p.Id == id)
+                .Include(p => p.User)
+                .Include(p => p.Tags)
+                .Include(p => p.Comments)
+                .ThenInclude(comments => comments.User)
+                .Include(p => p.Anwsers)
+                .ThenInclude(anwsers => anwsers.Comments)
+                .ThenInclude(anwserComments => anwserComments.User)
+                .FirstAsync();
+        }
+
         public Task<int> StorePostAsync(Post post, User user)
         {
             post.Type = (PostType)(int)PostType.Question;
@@ -66,6 +88,16 @@ namespace Dive.App.Repositories
 
                 post.Tags.Add(tagEntity);
             }
+
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> StoreAnwserAsync(Post post, Post anwser, User user)
+        {
+            anwser.Type = (PostType)(int)PostType.Answer;
+            anwser.UserId = user.Id;
+            anwser.ParentId = post.Id;
+            _context.Posts.Add(anwser);
 
             return await _context.SaveChangesAsync();
         }

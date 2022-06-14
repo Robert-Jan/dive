@@ -211,6 +211,33 @@ namespace Dive.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "comments",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    post_id = table.Column<int>(type: "integer", nullable: true),
+                    user_id = table.Column<int>(type: "integer", nullable: true),
+                    body = table.Column<string>(type: "text", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_comments", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_comments_posts_post_id",
+                        column: x => x.post_id,
+                        principalTable: "posts",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "fk_comments_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "post_tag",
                 columns: table => new
                 {
@@ -233,6 +260,16 @@ namespace Dive.Data.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_comments_post_id",
+                table: "comments",
+                column: "post_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_comments_user_id",
+                table: "comments",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_post_tag_tags_id",
@@ -295,6 +332,9 @@ namespace Dive.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "comments");
+
             migrationBuilder.DropTable(
                 name: "post_tag");
 

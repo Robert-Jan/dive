@@ -9,7 +9,7 @@ namespace Dive.App.ViewModels
     {
         public Post Post;
 
-        public string Timestamp => TimeZoneInfo.ConvertTime(Post.CreatedAt, Timezone).ToString("dd-MM-yyyy HH:mm");
+        public string Timestamp => GetTimestamp(Post.CreatedAt);
 
         public string GetMarkdown()
         {
