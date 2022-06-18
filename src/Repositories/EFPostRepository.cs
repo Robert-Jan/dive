@@ -68,6 +68,7 @@ namespace Dive.App.Repositories
                 .Include(p => p.Anwsers)
                 .ThenInclude(anwsers => anwsers.Comments)
                 .ThenInclude(anwserComments => anwserComments.User)
+                .AsSplitQuery()
                 .FirstAsync();
         }
 
@@ -92,12 +93,19 @@ namespace Dive.App.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> StoreAnwserAsync(Post post, Post anwser, User user)
+        public Task<int> StoreAnwserAsync(Post post, Post anwser, User user)
         {
             anwser.Type = (PostType)(int)PostType.Answer;
             anwser.UserId = user.Id;
             anwser.ParentId = post.Id;
             _context.Posts.Add(anwser);
+
+            return _context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateVoteScoreAsync(Post post, int score)
+        {
+            post.VoteScore = score;
 
             return await _context.SaveChangesAsync();
         }

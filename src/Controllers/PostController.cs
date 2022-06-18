@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dive.App.Models;
@@ -14,10 +16,16 @@ namespace Dive.App.Controllers
 
         private readonly IPostRepository _postRepository;
 
-        public PostController(IPostRepository postRepository, IUserRepository userRepository)
+        private readonly IVoteRepository _voteRepository;
+
+        public PostController(
+            IPostRepository postRepository,
+            IUserRepository userRepository,
+            IVoteRepository voteRepository)
         {
             _userRepository = userRepository;
             _postRepository = postRepository;
+            _voteRepository = voteRepository;
         }
 
         [HttpGet("/questions/{id}")]
@@ -27,9 +35,14 @@ namespace Dive.App.Controllers
 
             if (post == null) return NotFound();
 
+            var votes = User.Identity.IsAuthenticated
+                ? await _voteRepository.GetGivenVotes(post, await _userRepository.GetCurrentUserAsync())
+                : new List<Vote>();
+
             return View(new PostViewModel
             {
-                Post = post
+                Post = post,
+                GivenVotes = votes
             });
         }
 

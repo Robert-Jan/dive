@@ -1,14 +1,19 @@
 @model Dive.App.ViewModels.PostViewModel
 
 <div class="flex w-full p-6 bg-white rounded shadow">
-    <div class="flex flex-col w-1/12 pr-4">
-        <button class="text-2xl text-gray-400">
+    <div class="flex flex-col w-1/12 pr-4"
+        x-data="{data : {score: @Model.Post.VoteScore, vote: @Model.GetGivenVote()}}">
+        <button class="text-2xl text-gray-400" :class="{ 'text-indigo-400': data.vote == 1 }"
+            x-on:click="fetch('/questions/@Model.Post.Id/vote/1').then(r => r.json()).then(json => data = json)"
+            @(!User.Identity.IsAuthenticated ? @"disabled=disabled" : "")>
             &#9650;
         </button>
-        <p class="text-center text-lg text-gray-500">
-            888
+        <p class="text-center text-lg text-gray-500" x-text="data.score">
+            @Model.Post.VoteScore
         </p>
-        <button class="text-2xl text-gray-400">
+        <button class="text-2xl text-gray-400" :class="{ 'text-indigo-400': data.vote == 2 }"
+            x-on:click="fetch('/questions/@Model.Post.Id/vote/2').then(r => r.json()).then(json => data = json)"
+            @(!User.Identity.IsAuthenticated ? @"disabled=disabled" : "")>
             &#9660;
         </button>
     </div>

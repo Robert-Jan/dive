@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dive.Data.Migrations
 {
     [DbContext(typeof(DiveContext))]
-    [Migration("20220613191527_InitialCreate")]
+    [Migration("20220616195859_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,10 @@ namespace Dive.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("accepted_answer_id");
 
+                    b.Property<int>("AnwsersCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("anwsers_count");
+
                     b.Property<string>("Body")
                         .HasColumnType("text")
                         .HasColumnName("body");
@@ -106,6 +110,14 @@ namespace Dive.Data.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
+
+                    b.Property<int>("ViewsCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("views_count");
+
+                    b.Property<int>("VoteScore")
+                        .HasColumnType("integer")
+                        .HasColumnName("vote_score");
 
                     b.HasKey("Id")
                         .HasName("pk_posts");
@@ -202,6 +214,10 @@ namespace Dive.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("concurrency_stamp");
 
+                    b.Property<int>("CorrectAnswersCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("correct_answers_count");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -245,6 +261,10 @@ namespace Dive.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password_hash");
 
+                    b.Property<int>("QuestionsCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("questions_count");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text")
                         .HasColumnName("security_stamp");
@@ -265,6 +285,47 @@ namespace Dive.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("Dive.App.Models.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer")
+                        .HasColumnName("post_id");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnName("type");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_votes");
+
+                    b.HasIndex("PostId")
+                        .HasDatabaseName("ix_votes_post_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_votes_user_id");
+
+                    b.ToTable("votes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -461,6 +522,27 @@ namespace Dive.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Dive.App.Models.Vote", b =>
+                {
+                    b.HasOne("Dive.App.Models.Post", "Post")
+                        .WithMany("Votes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_votes_posts_post_id");
+
+                    b.HasOne("Dive.App.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_votes_users_user_id");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Dive.App.Models.Role", null)
@@ -540,6 +622,8 @@ namespace Dive.Data.Migrations
                     b.Navigation("Anwsers");
 
                     b.Navigation("Comments");
+
+                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }

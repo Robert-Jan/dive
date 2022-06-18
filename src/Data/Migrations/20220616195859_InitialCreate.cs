@@ -48,6 +48,8 @@ namespace Dive.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     first_name = table.Column<string>(type: "text", nullable: true),
                     last_name = table.Column<string>(type: "text", nullable: true),
+                    questions_count = table.Column<int>(type: "integer", nullable: false),
+                    correct_answers_count = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -99,6 +101,9 @@ namespace Dive.Data.Migrations
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     title = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     body = table.Column<string>(type: "text", nullable: true),
+                    vote_score = table.Column<int>(type: "integer", nullable: false),
+                    anwsers_count = table.Column<int>(type: "integer", nullable: false),
+                    views_count = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -261,6 +266,35 @@ namespace Dive.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "votes",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    type = table.Column<int>(type: "integer", nullable: false),
+                    post_id = table.Column<int>(type: "integer", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_votes", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_votes_posts_post_id",
+                        column: x => x.post_id,
+                        principalTable: "posts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_votes_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "ix_comments_post_id",
                 table: "comments",
@@ -328,6 +362,16 @@ namespace Dive.Data.Migrations
                 table: "users",
                 column: "normalized_user_name",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_votes_post_id",
+                table: "votes",
+                column: "post_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_votes_user_id",
+                table: "votes",
+                column: "user_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -354,13 +398,16 @@ namespace Dive.Data.Migrations
                 name: "user_tokens");
 
             migrationBuilder.DropTable(
-                name: "posts");
+                name: "votes");
 
             migrationBuilder.DropTable(
                 name: "tags");
 
             migrationBuilder.DropTable(
                 name: "roles");
+
+            migrationBuilder.DropTable(
+                name: "posts");
 
             migrationBuilder.DropTable(
                 name: "users");

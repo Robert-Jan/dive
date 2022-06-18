@@ -21,5 +21,7 @@ namespace Dive.App.Repositories
         Task<int> StoreTagsOnPostAsync(Post post, string[] tags);
 
         Task<int> StoreAnwserAsync(Post post, Post anwser, User user);
+
+        Task<int> UpdateVoteScoreAsync(Post post, int score);
     }
 }
