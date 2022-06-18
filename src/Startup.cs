@@ -92,6 +92,7 @@ namespace Dive.App
             services.AddTransient<IPostRepository, EFPostRepository>();
             services.AddTransient<ITagRepository, EFTagRepository>();
             services.AddTransient<IUserRepository, EFUserRepository>();
+            services.AddTransient<IVoteRepository, EFVoteRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiveContext context)

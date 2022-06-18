@@ -13,6 +13,10 @@ namespace Dive.App.Models
         [PersonalData]
         public string LastName { get; set; }
 
+        public int QuestionsCount { get; set; } = 0;
+
+        public int CorrectAnswersCount { get; set; } = 0;
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public string Avatar(int size = 200)

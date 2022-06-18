@@ -2,6 +2,7 @@ using System;
 using Markdig;
 using Dive.App.Models;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace Dive.App.ViewModels
 {
@@ -9,7 +10,15 @@ namespace Dive.App.ViewModels
     {
         public Post Post;
 
+        public List<Vote> GivenVotes = new();
+
         public string Timestamp => GetTimestamp(Post.CreatedAt);
+
+        public int GetGivenVote()
+        {
+            var vote = GivenVotes.Find(v => v.PostId == Post.Id);
+            return (int)(vote?.Type ?? 0);
+        }
 
         public string GetMarkdown()
         {

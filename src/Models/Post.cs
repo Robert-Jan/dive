@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,14 +32,24 @@ namespace Dive.App.Models
         [Column(TypeName = "text")]
         public string Body { get; set; }
 
+        public int VoteScore { get; set; } = 0;
+
+        public int AnwsersCount { get; set; } = 0;
+
+        public int ViewsCount { get; set; } = 0;
+
         public virtual ICollection<Comment> Comments { get; set; }
 
         public virtual ICollection<Tag> Tags { get; set; }
 
+        public virtual ICollection<Vote> Votes { get; set; }
+
         public Post()
         {
             Tags = new HashSet<Tag>();
+            Comments = new HashSet<Comment>();
             Anwsers = new HashSet<Post>();
+            Votes = new HashSet<Vote>();
         }
     }
 }

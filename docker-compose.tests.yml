@@ -4,7 +4,7 @@ services:
     app:
         image: rjvdelst/dive:dev
         environment:
-            - "ConnectionStrings__PostgreSQL=Server=database; Port=5432; Database=tests; Username=dive; Password=dive;"
+            - "ConnectionStrings__PostgreSQL=Server=database; Port=5432; Database=tests; Username=dive; Password=dive; Include Error Details=true;"
         working_dir: /dive
         entrypoint: dotnet test /dive/tests/Integration/IntegrationTests.csproj --logger:"trx;LogFileName=log.integration.trx" -- xunit.parallelizeTestCollections=false
         volumes:

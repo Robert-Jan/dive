@@ -2,6 +2,7 @@ using Dive.App.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Dive.App.Data
 {
@@ -9,6 +10,13 @@ namespace Dive.App.Data
     {
         public DiveContext(DbContextOptions<DiveContext> options) : base(options)
         {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            base.OnConfiguring(options);
+
+            options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -33,10 +41,14 @@ namespace Dive.App.Data
 
         public DbSet<Comment> Comments { get; set; }
 
-        public override DbSet<User> Users { get; set; }
-
         public DbSet<Post> Posts { get; set; }
 
+        public override DbSet<Role> Roles { get; set; }
+
         public DbSet<Tag> Tags { get; set; }
+
+        public override DbSet<User> Users { get; set; }
+
+        public DbSet<Vote> Votes { get; set; }
     }
 }
