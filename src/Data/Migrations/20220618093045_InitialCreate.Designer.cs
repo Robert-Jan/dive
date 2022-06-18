@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dive.Data.Migrations
 {
     [DbContext(typeof(DiveContext))]
-    [Migration("20220616195859_InitialCreate")]
+    [Migration("20220618093045_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -287,6 +287,43 @@ namespace Dive.Data.Migrations
                     b.ToTable("users", (string)null);
                 });
 
+            modelBuilder.Entity("Dive.App.Models.View", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer")
+                        .HasColumnName("post_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_views");
+
+                    b.HasIndex("PostId")
+                        .HasDatabaseName("ix_views_post_id");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_views_user_id");
+
+                    b.ToTable("views", (string)null);
+                });
+
             modelBuilder.Entity("Dive.App.Models.Vote", b =>
                 {
                     b.Property<int>("Id")
@@ -522,6 +559,27 @@ namespace Dive.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Dive.App.Models.View", b =>
+                {
+                    b.HasOne("Dive.App.Models.Post", "Post")
+                        .WithMany("Views")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_views_posts_post_id");
+
+                    b.HasOne("Dive.App.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_views_users_user_id");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Dive.App.Models.Vote", b =>
                 {
                     b.HasOne("Dive.App.Models.Post", "Post")
@@ -622,6 +680,8 @@ namespace Dive.Data.Migrations
                     b.Navigation("Anwsers");
 
                     b.Navigation("Comments");
+
+                    b.Navigation("Views");
 
                     b.Navigation("Votes");
                 });

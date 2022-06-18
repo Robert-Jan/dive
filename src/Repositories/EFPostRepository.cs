@@ -109,5 +109,27 @@ namespace Dive.App.Repositories
 
             return await _context.SaveChangesAsync();
         }
+
+        public async Task<int> SyncCountersAsync(Post post)
+        {
+            post.AnwsersCount = _context.Posts.Count(p => p.ParentId == post.Id);
+            post.ViewsCount = _context.Views.Count(v => v.PostId == post.Id);
+
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> RegisterViewAsync(Post post, User user)
+        {
+            var view = _context.Views
+                .Where(v => v.PostId == post.Id && v.UserId == user.Id)
+                .FirstOrDefault();
+
+            if (view == null) _context.Views.Add(new View { PostId = post.Id, UserId = user.Id });
+            else view.UpdateTimestamp();
+
+            await _context.SaveChangesAsync();
+
+            return await SyncCountersAsync(post);
+        }
     }
 }

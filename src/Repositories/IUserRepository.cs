@@ -13,5 +13,7 @@ namespace Dive.App.Repositories
         Task<int> UpdateUserAsync(int id, string email, string first_name, string last_name);
 
         Task<IdentityResult> UpdatePasswordAsync(User user, string currentPassword, string newPassword);
+
+        Task<int> SyncCountersAsync(User user);
     }
 }

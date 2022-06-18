@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,15 +34,16 @@ namespace Dive.App.Controllers
 
             if (post == null) return NotFound();
 
-            var votes = User.Identity.IsAuthenticated
-                ? await _voteRepository.GetGivenVotes(post, await _userRepository.GetCurrentUserAsync())
-                : new List<Vote>();
-
-            return View(new PostViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Post = post,
-                GivenVotes = votes
-            });
+                var user = await _userRepository.GetCurrentUserAsync();
+
+                var votes = await _voteRepository.GetGivenVotes(post, user);
+                await _postRepository.RegisterViewAsync(post, user);
+
+                return View(new PostViewModel { Post = post, GivenVotes = votes });
+            }
+            else return View(new PostViewModel { Post = post });
         }
 
         [Authorize]
@@ -63,6 +63,7 @@ namespace Dive.App.Controllers
                 await _postRepository.StorePostAsync(post, user);
                 await _postRepository.StoreTagsOnPostAsync(post, tags.Take(1).ToArray());
 
+                await _userRepository.SyncCountersAsync(user);
                 SetNotification("Success", "Your question is successfully created");
 
                 return RedirectToAction(nameof(Post), new { id = post.Id });
@@ -83,6 +84,7 @@ namespace Dive.App.Controllers
             {
                 User user = await _userRepository.GetCurrentUserAsync();
                 await _postRepository.StoreAnwserAsync(post, anwser, user);
+                await _postRepository.SyncCountersAsync(post);
 
                 SetNotification("Success", "Your anwser is successfully added");
             }

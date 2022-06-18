@@ -49,6 +49,8 @@ namespace Dive.App.Data
 
         public override DbSet<User> Users { get; set; }
 
+        public DbSet<View> Views { get; set; }
+
         public DbSet<Vote> Votes { get; set; }
     }
 }

@@ -42,6 +42,8 @@ namespace Dive.App.Models
 
         public virtual ICollection<Tag> Tags { get; set; }
 
+        public virtual ICollection<View> Views { get; set; }
+
         public virtual ICollection<Vote> Votes { get; set; }
 
         public Post()
@@ -49,6 +51,7 @@ namespace Dive.App.Models
             Tags = new HashSet<Tag>();
             Comments = new HashSet<Comment>();
             Anwsers = new HashSet<Post>();
+            Views = new HashSet<View>();
             Votes = new HashSet<Vote>();
         }
     }

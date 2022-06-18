@@ -34,10 +34,7 @@ namespace Dive.App.Repositories
                 .Where(v => v.PostId == post.Id)
                 .ToList();
 
-            votes.ForEach(v =>
-            {
-                score = v.Type == VoteType.Upvote ? score + 1 : score - 1;
-            });
+            votes.ForEach(v => score = v.Type == VoteType.Upvote ? score + 1 : score - 1);
 
             return score;
         }
@@ -57,12 +54,7 @@ namespace Dive.App.Repositories
                 if (vote.Type == type) return null;
             }
 
-            vote = new Vote
-            {
-                Post = post,
-                User = user,
-                Type = type
-            };
+            vote = new Vote { Post = post, User = user, Type = type };
 
             _context.Votes.Add(vote);
             _context.SaveChanges();

@@ -4,6 +4,7 @@ using Dive.App.Data;
 using Dive.App.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dive.App.Repositories
 {
@@ -48,6 +49,19 @@ namespace Dive.App.Repositories
         public async Task<IdentityResult> UpdatePasswordAsync(User user, string currentPassword, string newPassword)
         {
             return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
+        public async Task<int> SyncCountersAsync(User user)
+        {
+            user.QuestionsCount = _context.Posts.Count(p => p.UserId == user.Id && p.ParentId == null);
+
+            user.CorrectAnswersCount = _context.Posts
+                .Include(p => p.Parent)
+                .Where(p => p.Parent.AcceptedAnswerId == p.Id)
+                .Where(p => p.UserId == user.Id)
+                .Count();
+
+            return await _context.SaveChangesAsync();
         }
     }
 }
