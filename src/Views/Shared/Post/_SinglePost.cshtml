@@ -6,11 +6,15 @@
             <span class="md:-mb-1 mr-1 text-gray-900 md:text-lg">@Model.Post.VoteScore</span>
             votes
         </div>
-        <div class="flex items-end mr-3 md:m-0">
-            <span class="md:-mb-1 mr-1 text-gray-900 md:text-lg">@Model.Post.AnwsersCount</span>
+        <div
+            class="flex items-end mr-3 md:m-0 @(Model.Post.AcceptedAnswerId != null ? "font-medium text-green-600" : "")">
+            <span
+                class="md:-mb-1 mr-1 md:text-lg @(Model.Post.AcceptedAnswerId != null ? "font-bold text-green-600" : "text-gray-900")">
+                @Model.Post.AnwsersCount
+            </span>
             anwsers
         </div>
-        <div class="flex items-end">
+        <div class=" flex items-end">
             <span class="md:-mb-1 mr-1 text-gray-900 md:text-lg">@Model.Post.ViewsCount</span>
             views
         </div>

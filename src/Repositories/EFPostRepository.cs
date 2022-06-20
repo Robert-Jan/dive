@@ -52,6 +52,7 @@ namespace Dive.App.Repositories
         public Task<Post> GetByIdAsync(int id)
         {
             return _context.Posts
+                .Include(p => p.User)
                 .Where(p => p.Id == id)
                 .FirstAsync();
         }
@@ -101,6 +102,13 @@ namespace Dive.App.Repositories
             _context.Posts.Add(anwser);
 
             return _context.SaveChangesAsync();
+        }
+
+        public async Task<int> SetAcceptedAnswerAsync(Post post, Post anwser)
+        {
+            post.AcceptedAnswer = anwser;
+
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<int> UpdateVoteScoreAsync(Post post, int score)

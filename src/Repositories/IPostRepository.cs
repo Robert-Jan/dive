@@ -22,6 +22,8 @@ namespace Dive.App.Repositories
 
         Task<int> StoreAnwserAsync(Post post, Post anwser, User user);
 
+        Task<int> SetAcceptedAnswerAsync(Post post, Post anwser);
+
         Task<int> UpdateVoteScoreAsync(Post post, int score);
 
         Task<int> SyncCountersAsync(Post post);

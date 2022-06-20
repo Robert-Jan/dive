@@ -1,7 +1,9 @@
 @model Dive.App.ViewModels.PostViewModel
 
-<div class="flex w-full p-6 bg-white rounded shadow">
-    <div class="flex flex-col w-1/12 pr-4"
+<div
+    class="flex w-full p-6 rounded shadow 
+    @(Model.Post.Parent != null && Model.Post.Parent.AcceptedAnswerId == Model.Post.Id ? "bg-green-100 border border-green-600" : "bg-white")">
+    <div class=" flex flex-col w-1/12 pr-4"
         x-data="{data : {score: @Model.Post.VoteScore, vote: @Model.GetGivenVote()}}">
         <button class="text-2xl text-gray-400" :class="{ 'text-indigo-400': data.vote == 1 }"
             x-on:click="fetch('/questions/@Model.Post.Id/vote/1').then(r => r.json()).then(json => data = json)"
@@ -16,6 +18,19 @@
             @(!User.Identity.IsAuthenticated ? @"disabled=disabled" : "")>
             &#9660;
         </button>
+
+        @if (Model.Post.Parent != null
+        && User.Identity.IsAuthenticated
+        && ViewBag.CurrentUser.Id == Model.Post.Parent.User.Id)
+        {
+            <a href="/questions/@Model.Post.Parent.Id/accept/@Model.Post.Id" class="flex justify-around mt-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-400" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </a>
+        }
     </div>
     <div class="w-11/12">
         <div class="w-full markdown-body">
@@ -27,30 +42,33 @@
                     Posted at: @Model.Timestamp
                 </div>
                 <div class="flex">
-                    <div class="mr-6 mt-1">
-                        <p>
-                            @Model.Post.User.FirstName @Model.Post.User.LastName
-                        </p>
-                        <div class="flex flex-grow-0 text-right space-x-2 mt-1">
-                            <div class="flex flex-grow-0 space-x-1 text-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                                </svg>
-                                <span class="mx-1">@Model.Post.User.QuestionsCount</span>
-                            </div>
-                            <div class="flex space-x-1 text-center ">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <span class="mx-1">@Model.Post.User.CorrectAnswersCount</span>
+                    @if (Model.Post.User != null)
+                    {
+                        <div class="mr-6 mt-1">
+                            <p>
+                                @Model.Post.User.FirstName @Model.Post.User.LastName
+                            </p>
+                            <div class="flex flex-grow-0 text-right space-x-2 mt-1">
+                                <div class="flex flex-grow-0 space-x-1 text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                    </svg>
+                                    <span class="mx-1">@Model.Post.User.QuestionsCount</span>
+                                </div>
+                                <div class="flex space-x-1 text-center ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span class="mx-1">@Model.Post.User.CorrectAnswersCount</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <img class="h-14 w-14 mx-auto rounded-full" src="@Model.Post.User.Avatar()" alt="Avatar">
+                        <img class="h-14 w-14 mx-auto rounded-full" src="@Model.Post.User.Avatar()" alt="Avatar">
+                    }
                 </div>
             </div>
         </div>
