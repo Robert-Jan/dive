@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Dive.App.Models;
 using Dive.App.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -35,10 +34,7 @@ namespace Dive.App.Controllers
 
                 SetNotification("Success", "Settings updated successfully");
             }
-            else
-            {
-                SetNotification("Error", "Current password is incorrect", false);
-            }
+            else SetNotification("Error", "Current password is incorrect", false);
 
             return Redirect(url);
         }

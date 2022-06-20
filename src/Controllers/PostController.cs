@@ -91,5 +91,22 @@ namespace Dive.App.Controllers
 
             return RedirectToAction(nameof(Post), new { id = post.Id });
         }
+
+        [Authorize]
+        [HttpGet("/questions/{id}/accept/{anwserId}")]
+        public async Task<IActionResult> Accept(int id, int anwserId)
+        {
+            var post = await _postRepository.GetPostDetailsAsync(id);
+            var anwser = await _postRepository.GetByIdAsync(anwserId);
+            User user = await _userRepository.GetCurrentUserAsync();
+
+            if (anwser.ParentId != post.Id || post.UserId != user.Id) return NotFound();
+
+            await _postRepository.SetAcceptedAnswerAsync(post, anwser);
+
+            foreach (Post a in post.Anwsers) await _userRepository.SyncCountersAsync(a.User);
+
+            return RedirectToAction(nameof(Post), new { id = post.Id });
+        }
     }
 }
