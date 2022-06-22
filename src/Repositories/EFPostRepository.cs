@@ -49,6 +49,17 @@ namespace Dive.App.Repositories
                 .GetPagedAsync(page, 10);
         }
 
+        public Task<PagedResult<Post>> GetPostsFromUserAsync(User user, int page = 1)
+        {
+            return _context.Posts
+                .Where(p => p.UserId == user.Id)
+                .Where(p => p.ParentId == null)
+                .Include(p => p.Tags)
+                .Include(p => p.User)
+                .OrderByDescending(p => p.CreatedAt)
+                .GetPagedAsync(page, 10);
+        }
+
         public Task<Post> GetByIdAsync(int id)
         {
             return _context.Posts

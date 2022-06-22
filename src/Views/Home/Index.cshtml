@@ -21,9 +21,16 @@
 </div>
 
 <div class="flex flex-col my-8 divide-y shadow sm:rounded-md bg-white">
-    @foreach (Post post in Model.Posts.Results)
+    @if (Model.Posts.Meta.RowCount > 0)
     {
-        <partial name="Post/_SinglePost" model="new Dive.App.ViewModels.PostViewModel{ Post = post }" />
+        @foreach (Post post in Model.Posts.Results)
+        {
+            <partial name="Post/_SinglePost" model="new Dive.App.ViewModels.PostViewModel{ Post = post }" />
+        }
+    }
+    else
+    {
+        <partial name="_EmptyState" />
     }
 </div>
 
