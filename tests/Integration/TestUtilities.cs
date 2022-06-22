@@ -20,5 +20,15 @@ namespace Dive.Tests.Integration
 
             Assert.NotNull(result);
         }
+
+        public static void AssertHtmlDoesNotContains(string assert, string html)
+        {
+            var document = new HtmlDocument();
+            document.LoadHtml(html);
+
+            var result = document.DocumentNode.SelectNodes("//text()[contains(., '" + assert + "')]/..");
+
+            Assert.Null(result);
+        }
     }
 }

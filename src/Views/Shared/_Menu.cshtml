@@ -1,3 +1,6 @@
+@{
+    string CurrentController = ViewContext.RouteData.Values["controller"].ToString();
+}
 <nav class="bg-gray-800" x-data="{ menu: false, profile: false, settings: false }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
@@ -13,13 +16,13 @@
                 </div>
                 <div class="hidden lg:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                        <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                        <a href="/"
+                            class="px-3 py-2 rounded-md text-sm font-medium @(CurrentController == "Home" || CurrentController == "Post" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white")"
                             aria-current="page">Questions</a>
-                        <a href="#"
-                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tags</a>
-                        <a href="#"
-                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Users</a>
+                        <a href="/tags"
+                            class="px-3 py-2 rounded-md text-sm font-medium @(CurrentController == "Tag" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white")">Tags</a>
+                        <a href="/users"
+                            class="px-3 py-2 rounded-md text-sm font-medium @(CurrentController == "User" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white")">Users</a>
                     </div>
                 </div>
             </div>
@@ -94,12 +97,13 @@
     <div class="lg:hidden" x-cloak x-show="menu" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+            <a href="/"
+                class="block px-3 py-2 rounded-md text-base font-medium @(CurrentController == "Home" || CurrentController == "Post" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white")"
                 aria-current="page">Questions</a>
-            <a href="#"
-                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Tags</a>
-            <a href="#"
-                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Users</a>
+            <a href="/tags"
+                class="hover:text-white block px-3 py-2 rounded-md text-base font-medium @(CurrentController == "Tag" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white")">Tags</a>
+            <a href="/users"
+                class="hover:text-white block px-3 py-2 rounded-md text-base font-medium @(CurrentController == "User" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white")">Users</a>
         </div>
         <div class="pt-4 pb-3 border-t border-gray-700">
             @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser != null)

@@ -63,5 +63,19 @@ namespace Dive.App.Repositories
 
             return await _context.SaveChangesAsync();
         }
+
+        public Task<User> GetUserByIdAsync(int id)
+        {
+            return _context.Users
+                .Where(u => u.Id == id)
+                .FirstAsync();
+        }
+
+        public Task<PagedResult<User>> GetUsersAsync(int page = 1)
+        {
+            return _context.Users
+                .OrderByDescending(p => p.CreatedAt)
+                .GetPagedAsync(page, 12);
+        }
     }
 }

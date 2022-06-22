@@ -12,6 +12,8 @@ namespace Dive.App.Repositories
 
         Task<PagedResult<Post>> GetPostsWithRecentActivityAsync(int page = 1);
 
+        Task<PagedResult<Post>> GetPostsFromUserAsync(User user, int page = 1);
+
         Task<Post> GetByIdAsync(int id);
 
         Task<Post> GetPostDetailsAsync(int id);
