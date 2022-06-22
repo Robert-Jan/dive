@@ -76,10 +76,12 @@ namespace Dive.App.Repositories
                 .Include(p => p.User)
                 .Include(p => p.Tags)
                 .Include(p => p.Comments)
-                .ThenInclude(comments => comments.User)
+                    .ThenInclude(comments => comments.User)
                 .Include(p => p.Anwsers)
-                .ThenInclude(anwsers => anwsers.Comments)
-                .ThenInclude(anwserComments => anwserComments.User)
+                    .ThenInclude(anwsers => anwsers.User)
+                .Include(p => p.Anwsers)
+                    .ThenInclude(anwsers => anwsers.Comments)
+                        .ThenInclude(anwserComments => anwserComments.User)
                 .AsSplitQuery()
                 .FirstAsync();
         }
