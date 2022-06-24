@@ -60,7 +60,7 @@ namespace Dive.App.Controllers
             {
                 User user = await _userRepository.GetCurrentUserAsync();
                 await _postRepository.StorePostAsync(post, user);
-                await _postRepository.StoreTagsOnPostAsync(post, tags.Take(1).ToArray());
+                await _postRepository.StoreTagsOnPostAsync(post, tags.Take(5).ToArray());
 
                 await _userRepository.SyncCountersAsync(user);
                 SetNotification("Success", "Your question is successfully created");

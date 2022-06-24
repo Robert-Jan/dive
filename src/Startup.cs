@@ -90,6 +90,7 @@ namespace Dive.App
 
             services.AddTransient<ICommentRepository, EFCommentRepository>();
             services.AddTransient<IPostRepository, EFPostRepository>();
+            services.AddTransient<ISearchRepository, EFSearchRepository>();
             services.AddTransient<ITagRepository, EFTagRepository>();
             services.AddTransient<IUserRepository, EFUserRepository>();
             services.AddTransient<IVoteRepository, EFVoteRepository>();

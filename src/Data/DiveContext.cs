@@ -37,6 +37,14 @@ namespace Dive.App.Data
 
             builder.Entity<Post>().HasMany(p => p.Anwsers).WithOne(p => p.Parent)
                 .HasForeignKey(p => p.ParentId).OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Post>()
+                .HasGeneratedTsVectorColumn(
+                    p => p.SearchVector,
+                    "english",
+                    p => new { p.Title, p.Body })
+                .HasIndex(p => p.SearchVector)
+                .HasMethod("GIN");
         }
 
         public DbSet<Comment> Comments { get; set; }

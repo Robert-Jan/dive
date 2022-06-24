@@ -1,5 +1,6 @@
 @{
     string CurrentController = ViewContext.RouteData.Values["controller"].ToString();
+    string query = Context.Request.Query["q"];
 }
 <nav class="bg-gray-800" x-data="{ menu: false, profile: false, settings: false }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,14 +28,16 @@
                 </div>
             </div>
             <div class="flex items-center lg:ml-6">
-                <div class="flex items-center px-3 py-2 mr-2 text-gray-400 bg-gray-600 rounded">
+                <form action="/search" method="GET"
+                    class="flex items-center px-3 py-2 mr-2 text-gray-400 bg-gray-600 rounded">
                     <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input type="text" placeholder="Search..." class="p-0 border-0 bg-transparent focus:outline-none">
-                </div>
+                    <input type="text" name="q" value="@query" placeholder="Search..."
+                        class="p-0 border-0 bg-transparent border-transparent focus:border-transparent focus:ring-0">
+                </form>
                 <!-- Profile dropdown -->
                 @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser != null)
                 {

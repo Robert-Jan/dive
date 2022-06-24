@@ -67,10 +67,12 @@
                                         </button>
                                     </div>
                                 </template>
-                                <input id="tags" class="mb-2" placeholder="Add tag..." x-show="tags.length < 5"
+                                <input
+                                    class="mb-2 bg-transparent border-white focus:border-white focus:ring-0 focus:ring-white"
+                                    id="tags" placeholder="Add tag..." x-show="tags.length < 5" x-model="newTag"
                                     x-on:keydown.enter.prevent="if (newTag.trim() !== '' && !tags.includes(newTag.trim())) tags.push(newTag.trim()); newTag = ''"
                                     x-on:blur="if (newTag.trim() !== '' && !tags.includes(newTag.trim())) tags.push(newTag.trim()); newTag = ''"
-                                    x-on:keydown.backspace="if (newTag === '') tags.pop();" x-model="newTag">
+                                    x-on:keydown.backspace="if (newTag === '') tags.pop();">
                             </div>
                         </div>
                     </div>

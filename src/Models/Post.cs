@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using NpgsqlTypes;
 
 namespace Dive.App.Models
 {
@@ -31,6 +32,8 @@ namespace Dive.App.Models
 
         [Column(TypeName = "text")]
         public string Body { get; set; }
+
+        public NpgsqlTsVector SearchVector { get; set; }
 
         public int VoteScore { get; set; } = 0;
 

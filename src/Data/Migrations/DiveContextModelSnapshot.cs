@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using NpgsqlTypes;
 
 #nullable disable
 
@@ -92,6 +93,13 @@ namespace Dive.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("parent_id");
 
+                    b.Property<NpgsqlTsVector>("SearchVector")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("tsvector")
+                        .HasColumnName("search_vector")
+                        .HasAnnotation("Npgsql:TsVectorConfig", "english")
+                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Title", "Body" });
+
                     b.Property<string>("Title")
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)")
@@ -126,6 +134,11 @@ namespace Dive.Data.Migrations
 
                     b.HasIndex("ParentId")
                         .HasDatabaseName("ix_posts_parent_id");
+
+                    b.HasIndex("SearchVector")
+                        .HasDatabaseName("ix_posts_search_vector");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("SearchVector"), "GIN");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_posts_user_id");
