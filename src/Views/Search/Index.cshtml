@@ -1,0 +1,21 @@
+@model Dive.App.ViewModels.SearchViewModel
+@{
+    string query = Context.Request.Query["q"];
+    ViewData["Title"] = query != null ? $"Search results for \"{query}\"" : "Search";
+}
+
+<div class="flex flex-col my-8 divide-y shadow sm:rounded-md bg-white">
+    @if (Model.Posts.Meta.RowCount > 0)
+    {
+        @foreach (Post post in Model.Posts.Results)
+        {
+            <partial name="Post/_SinglePost" model="new Dive.App.ViewModels.PostViewModel{ Post = post }" />
+        }
+    }
+    else
+    {
+        <partial name="_EmptyState" />
+    }
+</div>
+
+<partial name="_Paging" model="new Dive.App.ViewModels.PagingViewModel{ Meta = Model.Posts.Meta }" />

@@ -34,17 +34,22 @@
 
     </div>
     <div class="w-3/12">
-        <h2 class="text-lg text-indigo-800">
-            Tags
-        </h2>
-        <div class="flex mt-2 mb-5">
-            @foreach (Tag tag in @Model.Post.Tags)
-            {
-                <div class="mr-1 px-3 border rounded-full bg-white">
-                    @tag.Name
-                </div>
-            }
-        </div>
+        @if (Model.Post.Tags.Count > 0)
+        {
+            <h2 class="text-lg text-indigo-800">
+                Tags
+            </h2>
+            <div class="flex mt-2 mb-5">
+                @foreach (Tag tag in Model.Post.Tags)
+                {
+                    <a href="/search?q=@tag.Name"
+                class="mr-1 px-3 border rounded-full bg-white hover:bg-indigo-700 hover:text-white">
+                        @tag.Name
+                    </a>
+                }
+            </div>
+        }
+
         <h2 class="text-lg text-indigo-800">
             Related
         </h2>

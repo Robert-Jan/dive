@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using NpgsqlTypes;
 
 #nullable disable
 
@@ -101,6 +102,9 @@ namespace Dive.Data.Migrations
                     user_id = table.Column<int>(type: "integer", nullable: false),
                     title = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     body = table.Column<string>(type: "text", nullable: true),
+                    search_vector = table.Column<NpgsqlTsVector>(type: "tsvector", nullable: true)
+                        .Annotation("Npgsql:TsVectorConfig", "english")
+                        .Annotation("Npgsql:TsVectorProperties", new[] { "title", "body" }),
                     vote_score = table.Column<int>(type: "integer", nullable: false),
                     anwsers_count = table.Column<int>(type: "integer", nullable: false),
                     views_count = table.Column<int>(type: "integer", nullable: false),
@@ -348,6 +352,12 @@ namespace Dive.Data.Migrations
                 name: "ix_posts_parent_id",
                 table: "posts",
                 column: "parent_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_posts_search_vector",
+                table: "posts",
+                column: "search_vector")
+                .Annotation("Npgsql:IndexMethod", "GIN");
 
             migrationBuilder.CreateIndex(
                 name: "ix_posts_user_id",
