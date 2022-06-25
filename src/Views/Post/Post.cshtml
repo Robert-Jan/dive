@@ -39,11 +39,11 @@
             <h2 class="text-lg text-indigo-800">
                 Tags
             </h2>
-            <div class="flex mt-2 mb-5">
+            <div class="flex flex-wrap mt-2 mb-5">
                 @foreach (Tag tag in Model.Post.Tags)
                 {
                     <a href="/search?q=@tag.Name"
-                class="mr-1 px-3 border rounded-full bg-white hover:bg-indigo-700 hover:text-white">
+                class="mr-1 mb-1 px-3 border rounded-full bg-white hover:bg-indigo-700 hover:text-white">
                         @tag.Name
                     </a>
                 }

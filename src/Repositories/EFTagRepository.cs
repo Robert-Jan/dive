@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dive.App.Data;
 using Dive.App.Models;
@@ -12,6 +14,13 @@ namespace Dive.App.Repositories
         public EFTagRepository(DiveContext context)
         {
             _context = context;
+        }
+
+        public async Task<List<Tag>> GetAllTagsAsync()
+        {
+            return await _context.Tags
+                .OrderBy(t => t.Name)
+                .ToListAsync();
         }
 
         public async Task<Tag> GetByTagOrCreateAsync(string tag)
