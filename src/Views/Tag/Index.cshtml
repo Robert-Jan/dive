@@ -1,0 +1,14 @@
+@model Dive.App.ViewModels.TagViewModel
+@{
+    ViewData["Title"] = "Tags";
+}
+
+<div class="flex flex-wrap">
+    @foreach (Tag tag in Model.Tags)
+    {
+        <a href="/search?q=@tag.Name"
+        class="text-lg m-1 px-4 border rounded-full bg-white hover:bg-indigo-700 hover:text-white">
+            @tag.Name
+        </a>
+    }
+</div>

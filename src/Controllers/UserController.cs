@@ -2,8 +2,6 @@ using Dive.App.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Dive.App.Repositories;
 using System.Threading.Tasks;
-using Dive.App.Models;
-using Dive.App.Data;
 
 namespace Dive.App.Controllers
 {
