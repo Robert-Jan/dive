@@ -3,16 +3,16 @@
     ViewData["Title"] = Model.Filters.Find(x => x.Key == Model.CurrentFilter).Value;
 }
 <div class="flex items-center justify-between">
-    <div class="flex space-x-2">
+    <div class="flex space-x-2 px-4 md:px-0">
         @foreach (KeyValuePair<string, string> filter in Model.Filters)
         {
             <a href="@Url.Action("Index", new { filter = filter.Key, page = 1 })"
-            class="py-1 px-5 rounded-full @(Model.CurrentFilter == filter.Key ? "bg-indigo-500 text-white" : "bg-gray-300")">
+            class="py-1 px-3 md:px-5 rounded-full text-sm md:text-base @(Model.CurrentFilter == filter.Key ? "bg-indigo-500 text-white" : "bg-gray-300")">
                 @filter.Value
             </a>
         }
     </div>
-    <div>
+    <div class="hidden sm:block">
         <a href="/ask"
             class="block px-4 py-2 text-indigo-300 bg-indigo-700 hover:text-indigo-400 hover:bg-indigo-800 rounded">
             Ask question
