@@ -50,9 +50,26 @@
             </div>
         }
 
-        <h2 class="text-lg text-indigo-800">
-            Related
-        </h2>
+        @if (Model.Related.Count > 0)
+        {
+            <h2 class="text-lg text-indigo-800">
+                Related
+            </h2>
+            <div class="flex flex-col mt-2 mb-5">
+                @foreach (Post post in Model.Related)
+                {
+                    <div class="flex items-start mb-1">
+                        <p
+                    class="shrink-0 w-10 mr-2 text-center text-sm text-gray-70 rounded @(post.AcceptedAnswerId != null ? "bg-green-100" : "bg-white")">
+                            @post.VoteScore
+                        </p>
+                        <a href="/questions/@post.Id" class="hover:underline">
+                            @post.Title
+                        </a>
+                    </div>
+                }
+            </div>
+        }
     </div>
 </div>
 

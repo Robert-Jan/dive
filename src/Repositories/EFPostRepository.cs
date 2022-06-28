@@ -3,6 +3,7 @@ using Dive.App.Data;
 using Dive.App.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Dive.App.Repositories
 {
@@ -84,6 +85,33 @@ namespace Dive.App.Repositories
                         .ThenInclude(anwserComments => anwserComments.User)
                 .AsSplitQuery()
                 .FirstAsync();
+        }
+
+        public List<Post> GetRelatedPosts(Post post, int amount = 10)
+        {
+            List<Post> posts = new();
+
+            post.Tags.ToList().ForEach(tag =>
+            {
+                var result = _context.Posts
+                    .Where(p => p.Id != post.Id)
+                    .Where(p => p.ParentId == null)
+                    .Where(p => p.Tags.Contains(tag))
+                    .Include(p => p.Tags)
+                    .OrderByDescending(p => p.VoteScore)
+                    .ThenBy(p => p.ViewsCount)
+                    .Take(amount * 5)
+                    .ToList();
+
+                result.ForEach(p => posts.Add(p));
+            });
+
+            return posts.GroupBy(p => p.Id)
+                .Select(p => new { Post = p.First(), Count = p.Count() })
+                .OrderByDescending(p => p.Count)
+                .Take(amount)
+                .Select(x => x.Post)
+                .ToList();
         }
 
         public Task<int> StorePostAsync(Post post, User user)
