@@ -3,7 +3,7 @@
     ViewData["Title"] = "Tags";
 }
 
-<div class="flex flex-wrap">
+<div class="flex flex-wrap px-4 md:px-0">
     @foreach (Tag tag in Model.Tags)
     {
         <a href="/search?q=@tag.Name"
