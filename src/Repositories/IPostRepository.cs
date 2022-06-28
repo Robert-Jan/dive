@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dive.App.Data;
 using Dive.App.Models;
@@ -17,6 +18,8 @@ namespace Dive.App.Repositories
         Task<Post> GetByIdAsync(int id);
 
         Task<Post> GetPostDetailsAsync(int id);
+
+        List<Post> GetRelatedPosts(Post post, int amount = 10);
 
         Task<int> StorePostAsync(Post post, User user);
 

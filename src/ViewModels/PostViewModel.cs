@@ -10,6 +10,8 @@ namespace Dive.App.ViewModels
     {
         public Post Post;
 
+        public List<Post> Related = new();
+
         public List<Vote> GivenVotes = new();
 
         public string Timestamp => GetTimestamp(Post.CreatedAt);

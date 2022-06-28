@@ -33,6 +33,8 @@ namespace Dive.App.Controllers
 
             if (post == null) return NotFound();
 
+            var related = _postRepository.GetRelatedPosts(post);
+
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userRepository.GetCurrentUserAsync();
@@ -40,9 +42,9 @@ namespace Dive.App.Controllers
                 var votes = await _voteRepository.GetGivenVotes(post, user);
                 await _postRepository.RegisterViewAsync(post, user);
 
-                return View(new PostViewModel { Post = post, GivenVotes = votes });
+                return View(new PostViewModel { Post = post, GivenVotes = votes, Related = related });
             }
-            else return View(new PostViewModel { Post = post });
+            else return View(new PostViewModel { Post = post, Related = related });
         }
 
         [Authorize]
