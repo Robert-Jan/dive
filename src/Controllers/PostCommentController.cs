@@ -34,8 +34,9 @@ namespace Dive.App.Controllers
 
             if (ModelState.IsValid)
             {
-                User user = await _userRepository.GetCurrentUserAsync();
+                var user = await _userRepository.GetCurrentUserAsync();
                 await _commentRepository.StoreCommentOnPostAsync(post, comment, user);
+                await _postRepository.UpdateTimestampAsync(post);
 
                 SetNotification("Success", "Your comment is successfully added");
             }

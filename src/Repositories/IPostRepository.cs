@@ -29,6 +29,8 @@ namespace Dive.App.Repositories
 
         Task<int> SetAcceptedAnswerAsync(Post post, Post anwser);
 
+        Task<int> UpdateTimestampAsync(Post post);
+
         Task<int> UpdateVoteScoreAsync(Post post, int score);
 
         Task<int> SyncCountersAsync(Post post);

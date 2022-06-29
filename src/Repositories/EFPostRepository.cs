@@ -145,26 +145,32 @@ namespace Dive.App.Repositories
             return _context.SaveChangesAsync();
         }
 
-        public async Task<int> SetAcceptedAnswerAsync(Post post, Post anwser)
+        public Task<int> SetAcceptedAnswerAsync(Post post, Post anwser)
         {
             post.AcceptedAnswer = anwser;
 
-            return await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateVoteScoreAsync(Post post, int score)
+        public Task<int> UpdateVoteScoreAsync(Post post, int score)
         {
             post.VoteScore = score;
 
-            return await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
+        }
+        public Task<int> UpdateTimestampAsync(Post post)
+        {
+            post.UpdateTimestamp();
+
+            return _context.SaveChangesAsync();
         }
 
-        public async Task<int> SyncCountersAsync(Post post)
+        public Task<int> SyncCountersAsync(Post post)
         {
             post.AnwsersCount = _context.Posts.Count(p => p.ParentId == post.Id);
             post.ViewsCount = _context.Views.Count(v => v.PostId == post.Id);
 
-            return await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
 
         public async Task<int> RegisterViewAsync(Post post, User user)
