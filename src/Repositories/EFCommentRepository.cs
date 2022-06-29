@@ -13,14 +13,14 @@ namespace Dive.App.Repositories
             _context = context;
         }
 
-        public async Task<int> StoreCommentOnPostAsync(Post post, Comment comment, User user)
+        public Task<int> StoreCommentOnPostAsync(Post post, Comment comment, User user)
         {
             comment.User = user;
             comment.Post = post;
 
             _context.Comments.Add(comment);
 
-            return await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
     }
 }

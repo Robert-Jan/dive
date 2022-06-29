@@ -85,6 +85,7 @@ namespace Dive.App.Controllers
             {
                 User user = await _userRepository.GetCurrentUserAsync();
                 await _postRepository.StoreAnwserAsync(post, anwser, user);
+                await _postRepository.UpdateTimestampAsync(post);
                 await _postRepository.SyncCountersAsync(post);
 
                 SetNotification("Success", "Your anwser is successfully added");
@@ -99,11 +100,13 @@ namespace Dive.App.Controllers
         {
             var post = await _postRepository.GetPostDetailsAsync(id);
             var anwser = await _postRepository.GetByIdAsync(anwserId);
-            User user = await _userRepository.GetCurrentUserAsync();
+            var user = await _userRepository.GetCurrentUserAsync();
 
             if (anwser.ParentId != post.Id || post.UserId != user.Id) return NotFound();
 
             await _postRepository.SetAcceptedAnswerAsync(post, anwser);
+            await _postRepository.UpdateTimestampAsync(post);
+            await _postRepository.UpdateTimestampAsync(anwser);
 
             foreach (Post a in post.Anwsers) await _userRepository.SyncCountersAsync(a.User);
 

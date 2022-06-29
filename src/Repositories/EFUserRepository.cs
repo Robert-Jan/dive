@@ -46,12 +46,12 @@ namespace Dive.App.Repositories
             return _context.SaveChangesAsync();
         }
 
-        public async Task<IdentityResult> UpdatePasswordAsync(User user, string currentPassword, string newPassword)
+        public Task<IdentityResult> UpdatePasswordAsync(User user, string currentPassword, string newPassword)
         {
-            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+            return _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
         }
 
-        public async Task<int> SyncCountersAsync(User user)
+        public Task<int> SyncCountersAsync(User user)
         {
             user.QuestionsCount = _context.Posts.Count(p => p.UserId == user.Id && p.ParentId == null);
 
@@ -61,7 +61,7 @@ namespace Dive.App.Repositories
                 .Where(p => p.UserId == user.Id)
                 .Count();
 
-            return await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
 
         public Task<User> GetUserByIdAsync(int id)

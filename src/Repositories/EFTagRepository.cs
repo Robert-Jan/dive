@@ -16,9 +16,9 @@ namespace Dive.App.Repositories
             _context = context;
         }
 
-        public async Task<List<Tag>> GetAllTagsAsync()
+        public Task<List<Tag>> GetAllTagsAsync()
         {
-            return await _context.Tags
+            return _context.Tags
                 .OrderBy(t => t.Name)
                 .ToListAsync();
         }
