@@ -10,3 +10,4 @@ services:
             - "5000:5000"
         volumes:
             - ./src:/dive/src
+            - ./resources/wwwroot/js:/dive/resources/wwwroot/js

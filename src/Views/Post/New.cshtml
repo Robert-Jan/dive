@@ -25,27 +25,38 @@
         </div>
     </div>
     <div class="mt-5 md:mt-0 md:col-span-2">
-        <form action="/ask" method="POST">
+        <form action="/ask" method="POST" x-data="form" x-on:focusout="change" x-on:input="change" x-on:submit="submit">
             @Html.AntiForgeryToken()
             <div class="shadow overflow-hidden sm:rounded-md">
                 <div class="px-4 py-5 bg-white sm:p-6">
                     <div class="grid grid-cols-6 gap-6">
                         <div class="col-span-6">
-                            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                            <label for="title" class="block text-sm font-medium text-gray-700">
+                                Title
+                                <span x-show="title.errorMessage" x-html="title.errorMessage"
+                                    class="float-right text-xs text-red-500"></span>
+                            </label>
                             <span class="block text-xs text-gray-500">
                                 Be specific and imagine you’re asking a question to another person
                             </span>
-                            <input type="text" name="title" maxlength="300" id="title"
+                            <input type="text" name="title" maxlength="300" id="title" required
+                                x-bind:class="{'border-red-500':title.errorMessage}"
+                                data-rules='["required","minLength:5"]'
                                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                         </div>
 
                         <div class="col-span-6">
-                            <label for="body" class="block text-sm font-medium text-gray-700">Describe your
-                                problem</label>
+                            <label for="body" class="block text-sm font-medium text-gray-700">
+                                Describe your problem
+                                <span x-show="body.errorMessage" x-html="body.errorMessage"
+                                    class="float-right text-xs text-red-500"></span>
+                            </label>
                             <span class="block mb-1 text-xs text-gray-500">
                                 Include all the information someone would need to answer your question
                             </span>
-                            <textarea id="smde" name="body" class="CodeMirror"></textarea>
+                            <textarea id="smde" name="body" class="CodeMirror w-full h-72 invisible" required
+                                x-bind:class="{'border-red-500':body.errorMessage}"
+                                data-rules='["required","minLength:32"]'></textarea>
                         </div>
 
                         <div class="col-span-6" x-data="{tags: [], newTag: ''}">
@@ -70,8 +81,8 @@
                                 <input
                                     class="mb-2 bg-transparent border-white focus:border-white focus:ring-0 focus:ring-white"
                                     id="tags" placeholder="Add tag..." x-show="tags.length < 5" x-model="newTag"
-                                    x-on:keydown.enter.prevent="if (newTag.trim() !== '' && !tags.includes(newTag.trim())) tags.push(newTag.trim()); newTag = ''"
-                                    x-on:blur="if (newTag.trim() !== '' && !tags.includes(newTag.trim())) tags.push(newTag.trim()); newTag = ''"
+                                    x-on:keydown.enter.prevent="if (newTag.toLowerCase().replace(/[^a-z0-9-_]/gi, '') !== '' && !tags.includes(newTag.toLowerCase().replace(/[^a-z0-9-_]/gi, ''))) tags.push(newTag.toLowerCase().replace(/[^a-z0-9-_]/gi, '')); newTag = ''"
+                                    x-on:blur="if (newTag.toLowerCase().replace(/[^a-z0-9-_]/gi, '') !== '' && !tags.includes(newTag.toLowerCase().replace(/[^a-z0-9-_]/gi, ''))) tags.push(newTag.toLowerCase().replace(/[^a-z0-9-_]/gi, '')); newTag = ''"
                                     x-on:keydown.backspace="if (newTag === '') tags.pop();">
                             </div>
                         </div>
@@ -94,10 +105,10 @@
 <script>
     new SimpleMDE({
         element: document.getElementById("smde"),
+        forceSync: true,
         spellChecker: false,
         promptURLs: true,
         toolbar: ["bold", "italic", "strikethrough", "quote", "|", "code", "link", "image", "|", "preview", "guide"],
-        autosave: { enabled: false },
         status: false
     });
 </script>

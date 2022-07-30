@@ -14,12 +14,19 @@
 
         @if (User.Identity.IsAuthenticated)
         {
-            <form action="/questions/@Model.Post.Id/anwser" method="POST">
+            <form action="/questions/@Model.Post.Id/anwser" method="POST" x-data="form" x-on:focusout="change"
+            x-on:input="change" x-on:submit="submit">
                 @Html.AntiForgeryToken()
                 <div class="shadow overflow-hidden sm:rounded-md bg-white">
                     <div class="px-4 py-3 sm:px-6">
-                        <label for="body" class="block mb-1 text-lg text-gray-700">Your anwser</label>
-                        <textarea id="smde" name="body" class="CodeMirror w-full h-72 invisible"></textarea>
+                        <label for="body" class="block mb-1 text-lg text-gray-700">
+                            Your anwser
+                            <span x-show="body.errorMessage" x-html="body.errorMessage"
+                            class="float-right text-xs text-red-500"></span>
+                        </label>
+                        <textarea id="smde" name="body" class="CodeMirror w-full h-72 invisible" required
+                        x-bind:class="{'border-red-500':body.errorMessage}"
+                        data-rules='["required","minLength:32"]'></textarea>
                     </div>
 
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
@@ -84,10 +91,10 @@
 <script>
     new SimpleMDE({
         element: document.getElementById("smde"),
+        forceSync: true,
         spellChecker: false,
         promptURLs: true,
         toolbar: ["bold", "italic", "strikethrough", "quote", "|", "code", "link", "image", "|", "preview", "guide"],
-        autosave: { enabled: false },
         status: false
     });
 </script>
