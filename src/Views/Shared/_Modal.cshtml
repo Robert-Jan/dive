@@ -6,7 +6,8 @@
             <div class="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
                 <div
                     class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 max-w-lg w-full">
-                    <form action='@ViewData["ModalFormAction"]' method="post">
+                    <form action='@ViewData["ModalFormAction"]' method="post" x-data="form" x-on:focusout="change"
+                        x-on:input="change" x-on:submit="submit">
                         @Html.AntiForgeryToken()
                         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                             @RenderBody()

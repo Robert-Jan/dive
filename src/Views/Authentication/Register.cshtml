@@ -3,7 +3,7 @@
     ViewData["Title"] = "Register";
 }
 <div class="w-full min-h-screen flex">
-    <div class="flex items-center justify-center w-full sm:w-1/3 px-6">
+    <div class="flex items-center justify-center w-full xl:w-1/3 px-6">
         <div class="max-w-md w-full">
             <div>
                 <svg class="mx-auto h-24 w-auto text-indigo-600" xmlns="http://www.w3.org/2000/svg"
@@ -21,42 +21,71 @@
                     </a>
                 </div>
             </div>
-            <form class="mt-8" action="/register" method="post">
+            <form class="mt-8" action="/register" method="post" x-data="form" x-on:focusout="change" x-on:input="change"
+                x-on:submit="submit">
                 @Html.AntiForgeryToken()
                 <div class="flex flex-col space-y-4">
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-gray-700" for="email">Email address</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700" for="email">
+                            Email address
+                            <span x-show="email.errorMessage" x-html="email.errorMessage"
+                                class="float-right text-xs text-red-500"></span>
+                        </label>
                         <input aria-label="Email address" id="email" name="email" type="email" required
+                            x-bind:class="{'border-red-500':email.errorMessage}" data-rules='["required","email"]'
                             class="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-indigo focus:border-indigo-300 focus:z-10 sm:text-sm sm:leading-5">
                     </div>
 
                     <div class="flex space-x-2">
                         <div>
-                            <label class="mb-1 block text-sm font-medium text-gray-700"
-                                for="first_name">Firstname</label>
+                            <label class="mb-1 block text-sm font-medium text-gray-700" for="first_name">
+                                Firstname
+                                <span x-show="first_name.errorMessage" x-html="first_name.errorMessage"
+                                    class="float-right text-xs text-red-500"></span>
+                            </label>
                             <input aria-label="Firstname" id="first_name" name="first_name" type="text" required
+                                x-bind:class="{'border-red-500':first_name.errorMessage}"
+                                data-rules='["required","string"]'
                                 class="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-indigo focus:border-indigo-300 sm:text-sm sm:leading-5">
                         </div>
                         <div>
-                            <label class="mb-1 block text-sm font-medium text-gray-700" for="last_name">Lastname</label>
+                            <label class="mb-1 block text-sm font-medium text-gray-700" for="last_name">
+                                Lastname
+                                <span x-show="last_name.errorMessage" x-html="last_name.errorMessage"
+                                    class="float-right text-xs text-red-500"></span>
+                            </label>
                             <input aria-label="Lastname" id="last_name" name="last_name" type="text" required
+                                x-bind:class="{'border-red-500':last_name.errorMessage}"
+                                data-rules='["required","string"]'
                                 class="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-indigo focus:border-indigo-300 sm:text-sm sm:leading-5">
                         </div>
                     </div>
 
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-gray-700" for="username">Username</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700" for="username">
+                            Username
+                            <span x-show="username.errorMessage" x-html="username.errorMessage"
+                                class="float-right text-xs text-red-500"></span>
+                        </label>
                         <input aria-label="Username" id="username" name="username" type="text" required
+                            x-bind:class="{'border-red-500':username.errorMessage}"
+                            data-rules='["required","string","alphanumeric"]'
                             class="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-indigo focus:border-indigo-300 sm:text-sm sm:leading-5">
                     </div>
 
                     <div x-data="{ open: false }">
-                        <label class="mb-1 block text-sm font-medium text-gray-700" for="password">Password</label>
+                        <label class="mb-1 block text-sm font-medium text-gray-700" for="password">
+                            Password
+                            <span x-show="password.errorMessage" x-html="password.errorMessage"
+                                class="float-right text-xs text-red-500"></span>
+                        </label>
                         <div class="mt-1 flex rounded-md shadow-sm">
                             <span x-on:click="open = ! open"
                                 class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm font-black cursor-pointer">
                                 ? </span>
-                            <input type="password" name="password" id="password"
+                            <input type="password" name="password" id="password" required
+                                x-bind:class="{'border-red-500':password.errorMessage}"
+                                data-rules='["required","password"]'
                                 class="focus:border-indigo-300 text-gray-900 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
                         </div>
                         <ul role="list" class="mt-2 pl-4 list-disc text-sm space-y-1" x-show="open" x-cloak>
@@ -88,5 +117,5 @@
             </form>
         </div>
     </div>
-    <div class="hidden sm:block w-2/3 bg-cover bg-center" style="background-image: url('/images/diver.jpg');"></div>
+    <div class="hidden xl:block w-2/3 bg-cover bg-center" style="background-image: url('/images/diver.jpg');"></div>
 </div>

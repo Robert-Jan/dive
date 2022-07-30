@@ -19,37 +19,55 @@
     </div>
     <div class="flex flex-col space-y-4">
         <div>
-            <label class="mb-1 block text-sm font-medium text-gray-700" for="email">Email address</label>
+            <label class="mb-1 block text-sm font-medium text-gray-700" for="email">
+                Email address
+                <span x-show="email.errorMessage" x-html="email.errorMessage"
+                    class="float-right text-xs text-red-500"></span>
+            </label>
             <input aria-label="Email address" id="email" name="email" type="email" value="@ViewBag.CurrentUser.Email"
-                required
+                required x-bind:class="{'border-red-500':email.errorMessage}" data-rules='["required","email"]'
                 class="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-indigo focus:border-indigo-300 focus:z-10 sm:text-sm sm:leading-5">
         </div>
 
         <div class="flex space-x-2">
             <div>
-                <label class="mb-1 block text-sm font-medium text-gray-700" for="first_name">Firstname</label>
+                <label class="mb-1 block text-sm font-medium text-gray-700" for="first_name">
+                    Firstname
+                    <span x-show="first_name.errorMessage" x-html="first_name.errorMessage"
+                        class="float-right text-xs text-red-500"></span>
+                </label>
                 <input aria-label="Firstname" id="first_name" name="first_name" type="text"
                     value="@ViewBag.CurrentUser.FirstName" required
+                    x-bind:class="{'border-red-500':first_name.errorMessage}" data-rules='["required","string"]'
                     class="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-indigo focus:border-indigo-300 sm:text-sm sm:leading-5">
             </div>
             <div>
-                <label class="mb-1 block text-sm font-medium text-gray-700" for="last_name">Lastname</label>
+                <label class="mb-1 block text-sm font-medium text-gray-700" for="last_name">
+                    Lastname
+                    <span x-show="last_name.errorMessage" x-html="last_name.errorMessage"
+                        class="float-right text-xs text-red-500"></span>
+                </label>
                 <input aria-label="Lastname" id="last_name" name="last_name" type="text"
                     value="@ViewBag.CurrentUser.LastName" required
+                    x-bind:class="{'border-red-500':last_name.errorMessage}" data-rules='["required","string"]'
                     class="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-indigo focus:border-indigo-300 sm:text-sm sm:leading-5">
             </div>
         </div>
 
         <div x-data="{ open: false }">
-            <label class="mb-1 block text-sm font-medium text-gray-700" for="password">
+            <label class="mb-1 block text-sm font-medium text-gray-700" for="new_password">
                 New password
-                <span class="font-light">(Leave empty to keep current password)</span>
+                <span x-show="!new_password.errorMessage" class="font-light">
+                    (Leave empty to keep current password)</span>
+                <span x-show="new_password.errorMessage" x-html="new_password.errorMessage"
+                    class="float-right text-xs text-red-500"></span>
             </label>
             <div class="mt-1 flex rounded-md shadow-sm">
                 <span x-on:click="open = ! open"
                     class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm font-black cursor-pointer">
                     ? </span>
-                <input type="password" name="new_password" id="password"
+                <input type="password" name="new_password" id="new_password"
+                    x-bind:class="{'border-red-500':new_password.errorMessage}" data-rules='["password"]'
                     class="focus:border-indigo-300 text-gray-900 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300">
             </div>
             <ul role="list" class="mt-2 pl-4 list-disc text-sm space-y-1" x-show="open" x-cloak>
@@ -72,8 +90,13 @@
         </div>
 
         <div>
-            <label class="mb-1 block text-sm font-medium text-gray-700" for="password">Current password</label>
+            <label class="mb-1 block text-sm font-medium text-gray-700" for="password">
+                Current password
+                <span x-show="current_password.errorMessage" x-html="current_password.errorMessage"
+                    class="float-right text-xs text-red-500"></span>
+            </label>
             <input aria-label="current password" id="password" name="current_password" type="password" required
+                x-bind:class="{'border-red-500':current_password.errorMessage}" data-rules='["required"]'
                 class="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-indigo focus:border-indigo-300 focus:z-10 sm:text-sm sm:leading-5">
         </div>
     </div>
