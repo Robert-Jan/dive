@@ -9,6 +9,13 @@ The following technologies are used:
 - Tailwind CSS
 - Alpine.js
 
+## Impressions
+Give Dive a try by running `curl https://raw.githubusercontent.com/Robert-Jan/dive/master/docker-compose.yml | docker-compose -f - -p 'dive' up` in your console and browse to `http://localhost:8080`.
+
+![Homepage](https://github.com/Robert-Jan/dive/blob/master/.github/screenshots/1.png?raw=true)
+![Question overview](https://github.com/Robert-Jan/dive/blob/master/.github/screenshots/2.png?raw=true)
+![Question editor](https://github.com/Robert-Jan/dive/blob/master/.github/screenshots/3.png?raw=true)
+
 ## Production
 ### Environment variables
 The following environment variables are available for the Dive image:
